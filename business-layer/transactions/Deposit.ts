@@ -1,13 +1,18 @@
 import { createDeposit as create, deleteDeposit as Delete, findDepositByID as findByID, getAllDeposits as getAll } from "@/data-access-layer/transactions/deposits"
 import { z } from "zod"
-import { Filter, TransactionSchema } from "./Transaction"
+import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction"
 
 
 export const DepositSchema = TransactionSchema
 
 export type Deposit = z.infer<typeof DepositSchema>
 
-export async function createDeposit(deposit: Deposit) {
+
+export const AddDepositSchema = AddTransactionSchema
+
+export type AddDeposit = z.infer<typeof AddDepositSchema>
+
+export async function createDeposit(deposit: AddDeposit) {
 
 
   const parseResult = DepositSchema.safeParse(deposit);

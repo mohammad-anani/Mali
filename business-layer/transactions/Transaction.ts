@@ -13,6 +13,11 @@ export const TransactionSchema = z.object(
 
 export type Transaction = z.infer<typeof TransactionSchema>
 
+export const AddTransactionSchema = TransactionSchema.omit({ id: true, date: true })
+
+export type AddTransaction = z.infer<typeof AddTransactionSchema>
+
+
 
 export const FilterSchema = z.object(
   {

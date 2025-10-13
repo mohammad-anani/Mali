@@ -5,15 +5,22 @@ import {
   getAllWithdraws as getAll,
 } from "@/data-access-layer/transactions/withdraws";
 import { z } from "zod";
-import { Filter, TransactionSchema } from "./Transaction";
+import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction";
 
 // --- Schema and type ---
 export const WithdrawSchema = TransactionSchema;
 export type Withdraw = z.infer<typeof WithdrawSchema>;
 
+
+
+export const AddWithdrawSchema = AddTransactionSchema
+
+export type AddWithdraw = z.infer<typeof AddWithdrawSchema>
+
+
 // --- Service functions ---
 
-export async function createWithdraw(withdraw: Withdraw) {
+export async function createWithdraw(withdraw: AddWithdraw) {
   const parseResult = WithdrawSchema.safeParse(withdraw);
   if (parseResult.success) return await create(withdraw);
 
