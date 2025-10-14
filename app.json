@@ -10,13 +10,14 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE"
-      },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
-    },
+   "android": {
+  "adaptiveIcon": {
+    "backgroundColor": "#E6F4FE"
+  },
+  "edgeToEdgeEnabled": true,
+  "predictiveBackGestureEnabled": false,
+  "backgroundColor":"#3E3E3E"
+},
     "web": {
       "output": "static",
       "bundler": "metro"

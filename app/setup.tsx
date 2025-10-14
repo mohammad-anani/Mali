@@ -1,30 +1,30 @@
-import steps from '@/components/setup/Steps';
-import Button from '@/components/util/Button';
-import Logo from '@/components/util/Logo';
-import LogoName from '@/components/util/LogoName';
-import { secondary2 } from '@/css';
+import steps from '@/src/components/setup/Steps';
+import Button from '@/src/components/util/Button';
+import Logo from '@/src/components/util/Logo';
+import LogoName from '@/src/components/util/LogoName';
+import { secondary2 } from '@/src/css';
+import useKeyboard from '@/src/hooks/useKeyboard';
 import { CircleArrowLeft } from "lucide-react-native";
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 export type initObject = {
-  name: string,
   lbp_usdRate: number,
-  lbp: number,
-  usd: number
+  lbp: number | null,
+  usd: number | null
 }
 
 export default function Setup() {
 
 
   const [pageIndex, setPageIndex] = useState(0);
-  const [object, setObject] = useState<initObject>({ name: "", lbp_usdRate: 90000, lbp: 0, usd: 0 });
+  const [object, setObject] = useState<initObject>({ lbp_usdRate: 90000, lbp: null, usd: null });
 
   const Steps = steps(object, setObject);
 
 
   function submit() {
-    console.log("submit");
+    console.log(object);
   }
 
   function incrementPageIndex() {
@@ -41,8 +41,11 @@ export default function Setup() {
 
   const pageCount = Steps.length;
 
+  const isKeyboardUp = useKeyboard();
+
   return (
-    <View className='flex flex-col items-center pb-10 h-full'>
+    <View className='flex flex-col items-center  h-full '>
+
       <View className=' self-start w-[58px] h-[58px]' >
 
         {
@@ -53,12 +56,12 @@ export default function Setup() {
             </Pressable>
             : null}
       </View>
-      <View className='flex flex-col items-center gap-8'>
+      <View className={!isKeyboardUp ? 'gap-8 flex flex-col items-center' : 'gap-3 flex flex-row items-center'}>
 
-        <Logo className='h-[186px] w-[186px]' />
-        <LogoName className='h-[120px] aspect-[2/1] ' />
+        <Logo className={!isKeyboardUp ? 'h-[186px] w-[186px]' : 'h-[60px] w-[60px]'} />
+        <LogoName className={!isKeyboardUp ? 'h-[120px] aspect-[2/1] ' : 'h-[40px] w-[100px] aspect-[2/1] '} />
       </View>
-      <View className='flex-1 justify-center items-center w-full'>
+      <View className=' flex-1 justify-center items-start self-start '>
         {Steps[pageIndex]}
       </View>
 
