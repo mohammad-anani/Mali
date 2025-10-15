@@ -1,9 +1,12 @@
-import steps from '@/src/components/setup/Steps';
+import { init } from '@/backend/business-layer/setup';
+import steps, { DEFAULT_RATE } from '@/src/components/setup/Steps';
 import Button from '@/src/components/util/Button';
 import Logo from '@/src/components/util/Logo';
 import LogoName from '@/src/components/util/LogoName';
 import { secondary2 } from '@/src/css';
 import useKeyboard from '@/src/hooks/useKeyboard';
+import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter';
+import { Redirect } from 'expo-router';
 import { CircleArrowLeft } from "lucide-react-native";
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -11,20 +14,31 @@ import { Pressable, View } from 'react-native';
 export type initObject = {
   lbp_usdRate: number,
   lbp: number | null,
-  usd: number | null
+  usd: number | null,
+  isError: boolean
 }
 
 export default function Setup() {
 
-
   const [pageIndex, setPageIndex] = useState(0);
-  const [object, setObject] = useState<initObject>({ lbp_usdRate: 90000, lbp: null, usd: null });
+  const [object, setObject] = useState<initObject>({ lbp_usdRate: 90000, lbp: null, usd: null, isError: false });
 
   const Steps = steps(object, setObject);
 
 
-  function submit() {
-    console.log(object);
+  async function submit() {
+
+
+    const finalUSDAmount = object.usd ?? 0
+    const finalLBPAmount = minimum_1k_MoneyFormatter(object.lbp ?? 0);
+    const finalRate = !object.lbp_usdRate ? DEFAULT_RATE : minimum_1k_MoneyFormatter(object.lbp_usdRate)
+
+
+    if (await init(finalRate, finalLBPAmount, finalUSDAmount)) {
+
+      return Redirect({ href: '/' })
+
+    }
   }
 
   function incrementPageIndex() {
@@ -65,7 +79,7 @@ export default function Setup() {
         {Steps[pageIndex]}
       </View>
 
-      <Button pressableProps={{ className: " bg-primary w-[280px] h-[100px] rounded-[50px] justify-center", onPress: () => incrementPageIndex() }} textProps={{ className: "text-secondary text-[59px] text-center" }}>
+      <Button pressableProps={{ className: " bg-primary w-[280px] h-[100px] rounded-[50px] justify-center ", onPress: () => incrementPageIndex(), disabled: object.isError }} textProps={{ className: "text-secondary text-[59px] text-center" }}>
         {!pageIndex ? "Start" : pageIndex === pageCount - 1 ? "Finish" : "Next"}
       </Button>
 

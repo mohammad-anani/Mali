@@ -1,8 +1,11 @@
-import { getDatabase } from "../general";
+import { openDatabase } from "../general";
 
 export async function createTransaction(transaction: any) {
   try {
-    const db = await getDatabase();
+
+    console.log(transaction);
+
+    const db = await openDatabase();
     if (!db) {
       console.error("Create: database is null");
       return 0;
@@ -25,7 +28,7 @@ export async function createTransaction(transaction: any) {
 
 export async function findTransactionByID(id: number): Promise<any> {
   try {
-    const db = await getDatabase();
+    const db = await openDatabase();
     if (!db) {
       console.error("findByID: database is null");
       return null;
@@ -45,7 +48,7 @@ export async function findTransactionByID(id: number): Promise<any> {
 
 export async function deleteTransaction(id: number) {
   try {
-    const db = await getDatabase();
+    const db = await openDatabase();
     if (!db) {
       console.error("Delete: database is null");
       return -1;
@@ -65,7 +68,7 @@ export async function deleteTransaction(id: number) {
 
 export async function getAllTransactions(filter: any = {}) {
   try {
-    const db = await getDatabase();
+    const db = await openDatabase();
     if (!db) {
       console.error("getAll: database is null");
       return [];

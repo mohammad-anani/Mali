@@ -1,5 +1,5 @@
-import { createDeposit as create, deleteDeposit as Delete, findDepositByID as findByID, getAllDeposits as getAll } from "@/data-access-layer/transactions/deposits"
 import { z } from "zod"
+import { createDeposit as create, deleteDeposit as Delete, findDepositByID as findByID, getAllDeposits as getAll } from "../../data-access-layer/transactions/deposits"
 import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction"
 
 
@@ -21,7 +21,7 @@ export async function createDeposit(deposit: AddDeposit) {
     return await create(deposit);
 
 
-  console.log(parseResult.error.format());
+
 
   return 0;
 
@@ -39,21 +39,20 @@ export async function findDepositByID(id: number) {
   if (parseResult.success)
     return deposit;
 
-  console.log(parseResult.error);
 
   return null;
 }
 
-export async function getAllDeposits(filter: Filter) {
+export async function getAllDeposits(filter?: Filter) {
 
   const deposits = await getAll(filter);
+
 
   const parseResult = z.array(DepositSchema).safeParse(deposits);
 
   if (parseResult.success)
     return deposits;
 
-  console.log(parseResult.error.format());
 
   return null;
 }

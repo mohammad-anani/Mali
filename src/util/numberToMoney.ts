@@ -14,7 +14,7 @@ export function numberToMoney(value: string | number): string {
 
   let [intPart, decPart] = str.split('.');
   intPart = intPart.replace(/^0+(?!$)/, ''); // remove leading zeros
-  intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' '); // add spaces every 3 digits
+  intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ','); // add spaces every 3 digits
 
   let formatted = decPart !== undefined ? `${intPart}.${decPart}` : intPart;
   if (isNegative && formatted !== '') formatted = '-' + formatted;

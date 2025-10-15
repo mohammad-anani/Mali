@@ -3,7 +3,7 @@ import * as SQLite from "expo-sqlite";
 /**
  * Open or get the database
  */
-export async function getDatabase(): Promise<SQLite.SQLiteDatabase | null> {
+export async function openDatabase(): Promise<SQLite.SQLiteDatabase | null> {
   try {
     const db = await SQLite.openDatabaseAsync("mali.db");
     return db;
@@ -16,18 +16,18 @@ export async function getDatabase(): Promise<SQLite.SQLiteDatabase | null> {
 /**
  * Check if the expected tables exist
  */
-export async function checkDatabaseExists(
+export async function checkAllDatabaseTablesExist(
   dbParam?: SQLite.SQLiteDatabase
 ): Promise<boolean> {
   try {
-    const db = dbParam || (await getDatabase());
+    const db = dbParam || (await openDatabase());
     if (!db) return false;
 
     const tables = (await db.getAllAsync(
       `SELECT name FROM sqlite_master WHERE type='table'`
     )) as { name: string }[];
-
     const tableNames = tables.map((t) => t.name);
+
     return (
       tableNames.includes("Presets") &&
       tableNames.includes("Transactions") &&
@@ -42,10 +42,32 @@ export async function checkDatabaseExists(
 /**
  * Delete (reset) the entire database file
  */
-export async function deleteDatabase(): Promise<boolean> {
+
+export async function resetDatabase(): Promise<boolean> {
   try {
-    await SQLite.deleteDatabaseAsync("mali.db");
-    console.log("Database reset: mali.db deleted successfully.");
+    const db = await openDatabase();
+    if (!db) {
+      console.error("resetDatabase: database is null");
+      return false;
+    }
+
+    // Disable foreign key checks to allow deletion in any order
+    await db.execAsync("PRAGMA foreign_keys = OFF;");
+
+    // List your tables explicitly (safer than querying sqlite_master)
+    const tables = ["Transactions", "Presets", "Settings"];
+
+    // Clear all data
+    for (const table of tables) {
+      await db.execAsync(`DELETE FROM ${table};`);
+      // Reset autoincrement counters (optional, but neat)
+      await db.execAsync(`DELETE FROM sqlite_sequence WHERE name='${table}';`);
+    }
+
+    // Re-enable foreign key checks
+    await db.execAsync("PRAGMA foreign_keys = ON;");
+
+    console.log("All tables cleared successfully.");
     return true;
   } catch (err) {
     console.error("resetDatabase error", err);
@@ -56,15 +78,19 @@ export async function deleteDatabase(): Promise<boolean> {
 /**
  * Create the database tables if they don't exist
  */
-export async function createDatabase(): Promise<boolean> {
+export async function createDatabaseTables(): Promise<boolean> {
   try {
-    const db = await getDatabase();
+    let db = await openDatabase();
     if (!db) return false;
 
-    if (await checkDatabaseExists(db)) {
-      console.log("Database exists. Skipping creation.");
-      return true;
+
+    if (await checkAllDatabaseTablesExist(db)) {
+
+
+      return await resetDatabase();
+
     }
+
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS Presets (
@@ -91,8 +117,7 @@ export async function createDatabase(): Promise<boolean> {
 
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS Settings (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
+        name TEXT NOT NULL PRIMARY KEY,
         value TEXT NOT NULL
       );
     `);

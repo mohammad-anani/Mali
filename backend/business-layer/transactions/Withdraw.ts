@@ -1,10 +1,10 @@
+import { z } from "zod";
 import {
   createWithdraw as create,
   deleteWithdraw as Delete,
   findWithdrawByID as findByID,
   getAllWithdraws as getAll,
-} from "@/data-access-layer/transactions/withdraws";
-import { z } from "zod";
+} from "../../data-access-layer/transactions/withdraws";
 import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction";
 
 // --- Schema and type ---

@@ -1,4 +1,4 @@
-import { setSettings as set } from "@/data-access-layer/settings";
+import { setSettings as set } from "../data-access-layer/settings";
 
 
 export async function setSettings(LBP_Per_USD_Rate: number) {
