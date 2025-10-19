@@ -20,9 +20,9 @@ export async function checkAllDatabaseTablesExist(
   dbParam?: SQLite.SQLiteDatabase
 ): Promise<boolean> {
   try {
+
     const db = dbParam || (await openDatabase());
     if (!db) return false;
-
     const tables = (await db.getAllAsync(
       `SELECT name FROM sqlite_master WHERE type='table'`
     )) as { name: string }[];

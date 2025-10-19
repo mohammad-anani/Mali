@@ -10,14 +10,17 @@
     "ios": {
       "supportsTablet": true
     },
-   "android": {
-  "adaptiveIcon": {
-    "backgroundColor": "#E6F4FE"
-  },
-  "edgeToEdgeEnabled": true,
-  "predictiveBackGestureEnabled": false,
-  "backgroundColor":"#3E3E3E"
-},
+    "icon": "./assets/images/logo.png",
+    "android": {
+      "icon": "./assets/images/logo.png",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "backgroundColor": "#000000",
+      "package": "com.anonymous.Mali"
+    },
     "web": {
       "output": "static",
       "bundler": "metro"

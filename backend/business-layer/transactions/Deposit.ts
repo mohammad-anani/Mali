@@ -15,13 +15,10 @@ export type AddDeposit = z.infer<typeof AddDepositSchema>
 export async function createDeposit(deposit: AddDeposit) {
 
 
-  const parseResult = DepositSchema.safeParse(deposit);
+  const parseResult = AddDepositSchema.safeParse(deposit);
 
   if (parseResult.success)
     return await create(deposit);
-
-
-
 
   return 0;
 

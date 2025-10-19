@@ -1,4 +1,4 @@
-import { initObject } from '@/app/setup';
+import { initObject } from '@/src/hooks/components/useSetup';
 import { Setter } from '@/src/types';
 import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter';
 import { numberToMoney } from '@/src/util/numberToMoney';
@@ -6,7 +6,7 @@ import { Text, View } from 'react-native';
 import Input from '../util/Input';
 
 export const DEFAULT_RATE = 90000;
-const MIN_AMOUNT = 1000
+export const MIN_AMOUNT = 1000
 
 function Intro({ object, setObject }: { object: initObject; setObject: Setter<initObject> }) {
   return <View >
@@ -27,7 +27,9 @@ function Amounts({ object, setObject }: { object: initObject; setObject: Setter<
 
   const amountError = object.lbp && object.lbp % MIN_AMOUNT !== 0;
 
-  const handleLBPChangeText = (text: string) => setObject(obj => ({ ...obj, lbp: +text }))
+  const handleLBPChangeText = (text: string) => {
+    setObject(obj => ({ ...obj, lbp: +text }))
+  }
   const handleUSDChangeText = (text: string) => setObject(obj => ({ ...obj, usd: +text }))
 
 

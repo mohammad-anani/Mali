@@ -1,6 +1,7 @@
 import { createTransaction, deleteTransaction, findTransactionByID, getAllTransactions } from "./transactions";
 
 export async function createDeposit(deposit: any) {
+  console.log("HI");
   return await createTransaction({ ...deposit, isDeposit: true })
 }
 
@@ -27,5 +28,6 @@ export async function deleteDeposit(id: number) {
 }
 
 export async function getAllDeposits(filter: any = {}) {
+
   return await getAllTransactions({ ...filter, isDeposit: true })
 }

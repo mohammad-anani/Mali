@@ -21,7 +21,7 @@ export type AddWithdraw = z.infer<typeof AddWithdrawSchema>
 // --- Service functions ---
 
 export async function createWithdraw(withdraw: AddWithdraw) {
-  const parseResult = WithdrawSchema.safeParse(withdraw);
+  const parseResult = AddWithdrawSchema.safeParse(withdraw);
   if (parseResult.success) return await create(withdraw);
 
   console.error(parseResult.error.format());
