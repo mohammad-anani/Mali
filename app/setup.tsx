@@ -2,7 +2,7 @@ import Button from '@/src/components/util/Button';
 import Logo from '@/src/components/util/Logo';
 import LogoName from '@/src/components/util/LogoName';
 import { secondary2 } from '@/src/css';
-import useSetup from '@/src/hooks/components/useSetup';
+import useSetup from '@/src/features/setup/useSetup';
 import { CircleArrowLeft } from "lucide-react-native";
 import React from 'react';
 import { Pressable, View } from 'react-native';

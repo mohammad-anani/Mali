@@ -48,7 +48,7 @@ export async function getAllDeposits(filter?: Filter) {
   const parseResult = z.array(DepositSchema).safeParse(deposits);
 
   if (parseResult.success)
-    return deposits;
+    return deposits as Deposit[];
 
 
   return null;

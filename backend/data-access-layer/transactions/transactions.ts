@@ -1,25 +1,21 @@
-import { openDatabase } from "../general";
+import { runDb } from "../general";
 
 export async function createTransaction(transaction: any) {
   try {
 
     console.log(transaction);
 
-    const db = await openDatabase();
-    if (!db) {
-      console.error("Create: database is null");
-      return 0;
-    }
-
     const { title, amount, isLBP, isDeposit, presetID = null } = transaction;
 
-    const result = await db.runAsync(
-      `INSERT INTO Transactions (title, amount, isLBP, isDeposit, presetID)
-       VALUES (?, ?, ?, ?, ?);`,
-      [title, amount, isLBP, isDeposit, presetID]
+    const result = await runDb(async (db) =>
+      db.runAsync(
+        `INSERT INTO Transactions (title, amount, isLBP, isDeposit, presetID)
+         VALUES (?, ?, ?, ?, ?);`,
+        [title, amount, isLBP, isDeposit, presetID]
+      )
     );
 
-    return result.lastInsertRowId ?? 0;
+    return (result as any)?.lastInsertRowId ?? 0;
   } catch (err) {
     console.error("Create error:", err);
     return 0;
@@ -28,18 +24,11 @@ export async function createTransaction(transaction: any) {
 
 export async function findTransactionByID(id: number): Promise<any> {
   try {
-    const db = await openDatabase();
-    if (!db) {
-      console.error("findByID: database is null");
-      return null;
-    }
-
-    const transaction = await db.getFirstAsync(
-      `SELECT * FROM Transactions WHERE id = ?;`,
-      [id]
+    const transaction = await runDb(async (db) =>
+      db.getFirstAsync(`SELECT * FROM Transactions WHERE id = ?;`, [id])
     );
 
-    return transaction ?? { id: 0 }
+    return transaction ?? { id: 0 };
   } catch (err) {
     console.error("findByID error:", err);
     return null;
@@ -48,18 +37,11 @@ export async function findTransactionByID(id: number): Promise<any> {
 
 export async function deleteTransaction(id: number) {
   try {
-    const db = await openDatabase();
-    if (!db) {
-      console.error("Delete: database is null");
-      return -1;
-    }
-
-    const result = await db.runAsync(
-      `DELETE FROM Transactions WHERE id = ?;`,
-      [id]
+    const result = await runDb(async (db) =>
+      db.runAsync(`DELETE FROM Transactions WHERE id = ?;`, [id])
     );
 
-    return result.changes ?? 0;
+    return (result as any)?.changes ?? 0;
   } catch (err) {
     console.error("Delete error:", err);
     return -1;
@@ -68,11 +50,7 @@ export async function deleteTransaction(id: number) {
 
 export async function getAllTransactions(filter: any = {}) {
   try {
-    const db = await openDatabase();
-    if (!db) {
-      console.error("getAll: database is null");
-      return [];
-    }
+    // run queries through the serialized runDb helper
 
     const { fromDate, toDate, presetID, title, isDeposit } = filter;
     const whereClauses: string[] = [];
@@ -106,13 +84,13 @@ export async function getAllTransactions(filter: any = {}) {
     const whereSQL =
       whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
-    const transactions = await db.getAllAsync(
-      `SELECT * FROM Transactions ${whereSQL};`,
-      params
+    const transactions = await runDb((db) =>
+      db.getAllAsync(`SELECT * FROM Transactions ${whereSQL};`, params)
     );
 
-    return transactions ?? [];
+    return (transactions as any) ?? [];
   } catch (err) {
+
     console.error("getAll error:", err);
     return [];
   }

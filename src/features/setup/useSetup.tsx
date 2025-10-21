@@ -1,10 +1,11 @@
 import { CheckDatabaseExists } from '@/backend/business-layer/general';
 import { init } from '@/backend/business-layer/setup';
-import steps, { DEFAULT_RATE } from '@/src/components/setup/Steps';
+import steps from '@/src/features/setup/Steps';
+import { DEFAULT_RATE } from '@/src/util/constants';
 import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import useKeyboard from '../util/useKeyboard';
+import useKeyboard from '../../hooks/useKeyboard';
 
 
 export type initObject = {
@@ -69,14 +70,14 @@ export default function useSetup() {
 
   async function incrementPageIndex() {
     if (pageIndex < pageCount - 1)
-      setPageIndex(p => ++p)
+      setPageIndex(p => p + 1)
     else
       await submit();
   }
 
   function decrementPageIndex() {
     if (pageIndex > 0)
-      setPageIndex(p => --p)
+      setPageIndex(p => p - 1)
   }
 
   const pageCount = Steps.length;

@@ -42,11 +42,11 @@ export async function findWithdrawByID(id: number) {
   return null;
 }
 
-export async function getAllWithdraws(filter: Filter) {
+export async function getAllWithdraws(filter?: Filter) {
   const withdraws = await getAll(filter); // await added
   const parseResult = z.array(WithdrawSchema).safeParse(withdraws);
 
-  if (parseResult.success) return withdraws;
+  if (parseResult.success) return parseResult.data;
 
   console.error(parseResult.error.format());
   return null;

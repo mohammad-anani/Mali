@@ -33,11 +33,9 @@ export async function getBalance(filter: any = {}) {
     const depositsQuery = `SELECT SUM(amount) AS totalDeposits FROM transactions WHERE isDeposit = 1${whereSQL}`;
     const withdrawalsQuery = `SELECT SUM(amount) AS totalWithdrawals FROM transactions WHERE isDeposit = 0${whereSQL}`;
 
-    // Execute both in parallel
-    const [depositResult, withdrawalResult] = await Promise.all([
-      db.getFirstAsync(depositsQuery, params),
-      db.getFirstAsync(withdrawalsQuery, params),
-    ]) as [{ totalDeposits: number | null }, { totalWithdrawals: number | null }];
+    // Execute queries sequentially to avoid concurrent prepare/execute on the same DB handle
+    const depositResult = (await db.getFirstAsync(depositsQuery, params)) as { totalDeposits: number | null };
+    const withdrawalResult = (await db.getFirstAsync(withdrawalsQuery, params)) as { totalWithdrawals: number | null };
 
     // Calculate final balance
     const deposits = depositResult?.totalDeposits ?? 0;

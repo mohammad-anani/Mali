@@ -3,6 +3,11 @@ module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
   content: ["./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
+  safelist: [
+  {
+    pattern: /(bg|text|border)-(primary|destroy)/,
+  },
+],
   theme: {
     extend: {
       colors:
@@ -11,7 +16,11 @@ module.exports = {
         primary:"#45A75A",
         secondary:"#F7F4EB",
 destroy:"#A74545",
-muted:"#9D9D9D"
+muted:"#9D9D9D",
+primaryDark:"#367048",
+destroyDark:"#963E3E",
+primaryLight:"#B0F0BE",
+destroyLight:"#F0B0B0"
       }
     },
   },

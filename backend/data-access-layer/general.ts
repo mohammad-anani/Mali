@@ -1,14 +1,60 @@
 import * as SQLite from "expo-sqlite";
 
+// Module-level cached database instance to avoid opening multiple handles
+let cachedDb: SQLite.SQLiteDatabase | null = null;
+
+// Simple promise-queue (mutex) to serialize DB operations that might call
+// prepare/exec concurrently on the same native DB handle.
+let dbQueue: Promise<void> = Promise.resolve();
+
+export async function runDb<T>(cb: (db: SQLite.SQLiteDatabase) => Promise<T>): Promise<T | null> {
+  try {
+    const db = await openDatabase();
+    if (!db) return null;
+
+    // chain onto the queue so operations run sequentially
+    const p = dbQueue.then(async () => {
+      try {
+        return await cb(db);
+      } catch (err) {
+        // bubble up
+        throw err;
+      }
+    });
+
+    // ensure queue continues after this op
+    dbQueue = p.then(() => undefined).catch(() => undefined);
+
+    return await p;
+  } catch (err) {
+    console.error("runDb error", err);
+    return null;
+  }
+}
+
 /**
  * Open or get the database
  */
 export async function openDatabase(): Promise<SQLite.SQLiteDatabase | null> {
   try {
+    // Return cached instance when available
+    if (cachedDb) return cachedDb;
+
     const db = await SQLite.openDatabaseAsync("mali.db");
-    return db;
+
+    // basic sanity check: run a no-op statement to ensure the native DB is ready
+    try {
+      await db.execAsync("PRAGMA foreign_keys = ON;");
+    } catch (err) {
+      // if this fails, log it but still return the db; callers will handle subsequent errors
+      console.warn("openDatabase: warning running PRAGMA", err);
+    }
+
+    cachedDb = db;
+    return cachedDb;
   } catch (err) {
     console.error("getDatabase error", err);
+    cachedDb = null;
     return null;
   }
 }

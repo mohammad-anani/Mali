@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 
 
 
-export default function Toggle({ isToggled, setIsToggled, isDeposit }: { isToggled: boolean, setIsToggled: (isToggled: boolean) => void, isDeposit: boolean }) {
+export default function CurrencyToggle({ isToggled, setIsToggled, isDeposit }: { isToggled: boolean, setIsToggled: (isToggled: boolean) => void, isDeposit: boolean }) {
   const baseViewClass = 'w-[75px] rounded-full h-[90%]';
   const activeViewClass = isDeposit ? 'bg-primary' : "bg-destroy";
   const baseTextClass = 'text-[22px] text-center mt-2';
