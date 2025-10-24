@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { createDeposit as create, deleteDeposit as Delete, findDepositByID as findByID, getAllDeposits as getAll } from "../../data-access-layer/transactions/deposits"
-import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction"
+import { AddTransactionSchema, TransactionSchema } from "./Transaction"
 
 
 export const DepositSchema = TransactionSchema
@@ -34,15 +34,15 @@ export async function findDepositByID(id: number) {
   const parseResult = DepositSchema.safeParse(deposit);
 
   if (parseResult.success)
-    return deposit;
+    return deposit as Deposit;
 
 
   return null;
 }
 
-export async function getAllDeposits(filter?: Filter) {
+export async function getAllDeposits() {
 
-  const deposits = await getAll(filter);
+  const deposits = await getAll();
 
 
   const parseResult = z.array(DepositSchema).safeParse(deposits);

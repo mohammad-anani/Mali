@@ -9,9 +9,9 @@ export async function createTransaction(transaction: any) {
 
     const result = await runDb(async (db) =>
       db.runAsync(
-        `INSERT INTO Transactions (title, amount, isLBP, isDeposit, presetID)
-         VALUES (?, ?, ?, ?, ?);`,
-        [title, amount, isLBP, isDeposit, presetID]
+        `INSERT INTO Transactions (title, amount, isLBP, isDeposit, presetID,date)
+         VALUES (?, ?, ?, ?, ?,?);`,
+        [title, amount, isLBP, isDeposit, presetID, new Date().toISOString(),]
       )
     );
 
@@ -41,10 +41,10 @@ export async function deleteTransaction(id: number) {
       db.runAsync(`DELETE FROM Transactions WHERE id = ?;`, [id])
     );
 
-    return (result as any)?.changes ?? 0;
+    return !!((result as any)?.changes);
   } catch (err) {
     console.error("Delete error:", err);
-    return -1;
+    return false;
   }
 }
 
@@ -85,7 +85,7 @@ export async function getAllTransactions(filter: any = {}) {
       whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
     const transactions = await runDb((db) =>
-      db.getAllAsync(`SELECT * FROM Transactions ${whereSQL};`, params)
+      db.getAllAsync(`SELECT * FROM Transactions ${whereSQL} order by date desc;`, params)
     );
 
     return (transactions as any) ?? [];

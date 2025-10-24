@@ -2,7 +2,7 @@ import { destroy, destroyDark, primary, primaryDark } from '@/src/css';
 import themeColor from '@/src/util/themeColor';
 import React, { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import ContentView from '../util/ContentView';
+import ContentView from './ContentView';
 
 export default function DepositWithdrawTabs({ children, isWithdraw, setIsWithdraw }: { children: ReactNode, isWithdraw: boolean, setIsWithdraw: (isWithdraw: boolean) => void }) {
 

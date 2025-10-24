@@ -6,7 +6,7 @@ import { numberToMoney } from '@/src/util/numberToMoney'
 import React from 'react'
 import { Text, View } from 'react-native'
 
-export default function Balance({ usdBalance, lbpBalance, isLoading = false, isError = false }: { usdBalance: number | undefined, lbpBalance: number | undefined, isLoading: boolean, isError?: boolean }) {
+export default function Balance({ usdBalance, lbpBalance, isLoading = false, isError = false }: { usdBalance: number | null, lbpBalance: number | null, isLoading: boolean, isError?: boolean }) {
 
 
   const error = isError || !usdBalance || !lbpBalance

@@ -17,7 +17,11 @@ export default function Layout() {
         tabBarStyle: { backgroundColor: '#324335', height: 70, alignItems: "center" },
         tabBarLabelStyle: { fontSize: 20 },
         tabBarIconStyle: { width: 30, height: 30, },
-        sceneStyle: { backgroundColor: background }
+        sceneStyle: { backgroundColor: background },
+        animation: "shift",
+
+
+
       }}
 
 
@@ -27,14 +31,18 @@ export default function Layout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => <House color={color} size={size} />,
+
         }}
+
       />
       <Tabs.Screen
         name="actions"
         options={{
           title: 'Actions',
           tabBarIcon: ({ color, size }) => <ArrowUpDown color={color} size={size} />,
+
         }}
+
       />
       <Tabs.Screen
         name="presets"

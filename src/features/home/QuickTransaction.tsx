@@ -1,8 +1,8 @@
-import AmountInput from '@/src/components/transactions/AmountInput';
-import TitleInput from '@/src/components/transactions/TitleInput';
+import AmountInput from '@/src/components/util/AmountInput';
 import Button from '@/src/components/util/Button';
 import ContentView from '@/src/components/util/ContentView';
 import Title from '@/src/components/util/Title';
+import TitleInput from '@/src/components/util/TitleInput';
 import useQuickTransaction from '@/src/features/home/useQuickTransaction';
 import React from 'react';
 import { View } from 'react-native';
@@ -10,7 +10,7 @@ import { View } from 'react-native';
 
 
 
-export default function QuickTransaction({ mode, balances }: { mode: "Deposit" | "Withdraw", balances: [number, number] }) {
+export default function QuickTransaction({ mode, balances }: { mode: "Deposit" | "Withdraw", balances: [number | null, number | null] }) {
 
 
 

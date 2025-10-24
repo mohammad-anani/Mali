@@ -27,13 +27,3 @@ export type AddTransaction = z.infer<typeof AddTransactionSchema>
 
 
 
-export const FilterSchema = z.object(
-  {
-    title: z.string().optional(),
-    fromDate: z.string().datetime().optional(),
-    toDate: z.string().datetime().optional(),
-    presetID: z.number().optional(),
-  }
-)
-
-export type Filter = z.infer<typeof FilterSchema>

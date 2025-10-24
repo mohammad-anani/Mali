@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from 'react-native'
 import Logo from './Logo'
 import LogoName from './LogoName'
 
-export default function Loading({ size = "large" }: { size: "large" | "medium" | "small" }) {
+export default function Loading({ size = "large" }: { size?: "large" | "medium" | "small" }) {
 
 
 
@@ -27,13 +27,10 @@ export default function Loading({ size = "large" }: { size: "large" | "medium" |
 
     //on need
     case "medium":
-      return (<View className="flex flex-col  items-center  h-full gap-10">
-        <View className='gap-8 flex flex-col items-center'>
+      return (<View className="flex flex-col  items-center justify-center flex-1 gap-10">
+        <LogoName className='h-[60px] aspect-[2/1] ' />
 
-          <Logo className='h-[100px] w-[100px]' />
-          <LogoName className='h-[80px] aspect-[2/1] ' />
-        </View>
-        <ActivityIndicator size={100} color={primary} />
+        <ActivityIndicator size={80} color={primary} />
       </View>)
   }
 }

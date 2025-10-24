@@ -5,7 +5,6 @@ import { DEFAULT_RATE } from '@/src/util/constants';
 import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import useKeyboard from '../../hooks/useKeyboard';
 
 
 export type initObject = {
@@ -41,7 +40,7 @@ export default function useSetup() {
 
   const [pageIndex, setPageIndex] = useState(0);
   const [object, setObject] = useState<initObject>({ lbp_usdRate: 90000, lbp: null, usd: null, isError: false });
-  const isKeyboardUp = useKeyboard();
+
 
 
 
@@ -85,7 +84,7 @@ export default function useSetup() {
 
 
 
-  return { pageIndex, pageCount, object, Steps, incrementPageIndex, decrementPageIndex, isKeyboardUp };
+  return { pageIndex, pageCount, object, Steps, incrementPageIndex, decrementPageIndex };
 
 }
 

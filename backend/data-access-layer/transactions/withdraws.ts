@@ -26,6 +26,6 @@ export async function deleteWithdraw(id: number) {
 
 }
 
-export async function getAllWithdraws(filter: any = {}) {
-  return await getAllTransactions({ ...filter, isDeposit: false })
+export async function getAllWithdraws() {
+  return await getAllTransactions({ isDeposit: false })
 }

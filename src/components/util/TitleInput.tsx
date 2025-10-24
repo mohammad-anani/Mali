@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Input from '../util/Input';
+import Input from './Input';
 
 export default function TitleInput({ title, isDeposit, setTitle, hasSubmitted }: { title: string, isDeposit: boolean, setTitle: (title: string) => void, hasSubmitted: boolean }) {
 

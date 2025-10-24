@@ -1,12 +1,11 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import Loading from '@/src/components/util/Loading';
+import { router } from 'expo-router';
+import React from 'react';
 
 export default function Index() {
-  return (
-    <View>
-      <Text>Index</Text>
-    </View>
-  )
+  router.replace("/app/actions/withdraws/list");
+
+
+  return <Loading />
 }
 
-const styles = StyleSheet.create({})

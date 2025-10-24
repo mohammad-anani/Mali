@@ -27,7 +27,7 @@ export async function deleteDeposit(id: number) {
 
 }
 
-export async function getAllDeposits(filter: any = {}) {
+export async function getAllDeposits() {
 
-  return await getAllTransactions({ ...filter, isDeposit: true })
+  return await getAllTransactions({ isDeposit: true })
 }

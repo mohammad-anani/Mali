@@ -5,7 +5,7 @@ import {
   findWithdrawByID as findByID,
   getAllWithdraws as getAll,
 } from "../../data-access-layer/transactions/withdraws";
-import { AddTransactionSchema, Filter, TransactionSchema } from "./Transaction";
+import { AddTransactionSchema, TransactionSchema } from "./Transaction";
 
 // --- Schema and type ---
 export const WithdrawSchema = TransactionSchema;
@@ -36,17 +36,17 @@ export async function findWithdrawByID(id: number) {
   const withdraw = await findByID(id); // await added
   const parseResult = WithdrawSchema.safeParse(withdraw);
 
-  if (parseResult.success) return withdraw;
+  if (parseResult.success) return withdraw as Withdraw;
 
   console.error(parseResult.error.format());
   return null;
 }
 
-export async function getAllWithdraws(filter?: Filter) {
-  const withdraws = await getAll(filter); // await added
+export async function getAllWithdraws() {
+  const withdraws = await getAll(); // await added
   const parseResult = z.array(WithdrawSchema).safeParse(withdraws);
 
-  if (parseResult.success) return parseResult.data;
+  if (parseResult.success) return parseResult.data as Withdraw[];
 
   console.error(parseResult.error.format());
   return null;

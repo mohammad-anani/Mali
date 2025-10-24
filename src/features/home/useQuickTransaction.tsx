@@ -72,7 +72,7 @@ export default function useQuickTransaction(
 
   const mutation = useMutation({
     mutationFn: submitFn,
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       // Reset form
       setObject({ title: "", amount: null, isLBP: true });
       setHasSubmitted(false);
@@ -84,9 +84,11 @@ export default function useQuickTransaction(
       });
 
       // Refresh balances
-      queryClient.invalidateQueries({
-        queryKey: [result.isLBP ? "lbpBalance" : "usdBalance"],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [result.isLBP ? "lbpBalance" : "usdBalance"] }),
+        queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"] }),
+      ]);
+
 
     },
     onError: (err: any) => {

@@ -4,9 +4,10 @@ import { Text, View } from 'react-native'
 
 export default function Error({ message }: { message?: string }) {
   return (
-    <View className="flex flex-col  items-center   ">
+
+    <View className="flex flex-col  items-center justify-center flex-1">
       <Frown width={50} height={50} />
-      <Text className='text-xl'>Error: {message ?? "Something wrong happened."}</Text>
+      <Text className='text-xl text-center'>Error: {message ?? "Something wrong happened."}</Text>
     </View>
   )
 }
