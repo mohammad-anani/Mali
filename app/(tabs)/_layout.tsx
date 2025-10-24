@@ -1,17 +1,34 @@
+import { CheckDatabaseExists } from '@/backend/business-layer/general'
 import { background, secondary } from '@/src/css'
-import { Tabs } from 'expo-router'
+import { router, Tabs } from 'expo-router'
 import { ArrowUpDown, CircleDollarSign, House, Save } from 'lucide-react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function Layout() {
 
 
+  useEffect(
+    () => {
+      async function checkDB() {
+
+        const dbExists = await CheckDatabaseExists();
+
+        if (!dbExists)
+          router.replace("/setup");
+
+
+      }
+
+      checkDB();
+
+    }
+    , [])
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-
+        popToTopOnBlur: true,
         tabBarActiveTintColor: secondary,
         tabBarInactiveTintColor: '#f7f4eb52',
         tabBarStyle: { backgroundColor: '#324335', height: 70, alignItems: "center" },
@@ -24,7 +41,7 @@ export default function Layout() {
 
       }}
 
-
+      initialRouteName='home'
     >
       <Tabs.Screen
         name="home"

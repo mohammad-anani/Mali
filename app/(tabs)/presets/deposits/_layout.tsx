@@ -7,10 +7,9 @@ export default function _layout() {
   return (
     <DepositWithdrawTabs isWithdraw={false} setIsWithdraw={(isWithdraw) => {
       if (isWithdraw)
-        router.push("/app/actions/withdraws/list")
+        router.push("/presets/withdraws/list")
     }}>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: secondary }, animation: "fade" }} initialRouteName='list' />
-
     </DepositWithdrawTabs>
   )
 }

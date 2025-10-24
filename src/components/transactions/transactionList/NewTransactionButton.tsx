@@ -13,7 +13,7 @@ export default function NewTransactionButton({ isDeposit }: { isDeposit: boolean
         className: `h-20 rounded-3xl bg-${color} items-center justify-center`,
         onPress: (() => {
 
-          router.push(isDeposit ? "/app/actions/deposits/add" : "/app/actions/withdraws/add")
+          router.push(isDeposit ? "/actions/deposits/add" : "/actions/withdraws/add")
 
         })
 

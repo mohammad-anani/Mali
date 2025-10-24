@@ -7,8 +7,8 @@ import { ScrollView } from 'react-native';
 
 export default function Home() {
 
-  const { usdBalance, lbpBalance, isError, isLoading } = useHome();
 
+  const { usdBalance, lbpBalance, isError, isLoading } = useHome();
 
   return (
     <ScrollView stickyHeaderIndices={[1]} className=' flex-1 ' contentContainerClassName=' p-5 gap-6' showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>

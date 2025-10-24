@@ -12,7 +12,7 @@ export default function NewPresetButton({ isDeposit }: { isDeposit: boolean }) {
         className: `h-20 rounded-3xl bg-${color} items-center justify-center`,
         onPress: (() => {
 
-          router.push(isDeposit ? "/app/presets/deposits/add" : "/app/presets/withdraws/add")
+          router.push(isDeposit ? "/presets/deposits/add" : "/presets/withdraws/add")
 
         })
       }}

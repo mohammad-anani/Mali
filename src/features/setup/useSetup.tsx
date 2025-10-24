@@ -25,7 +25,7 @@ export default function useSetup() {
         const dbExists = await CheckDatabaseExists();
 
         if (dbExists)
-          router.replace("/");
+          router.replace("/home");
 
       }
 
@@ -61,7 +61,7 @@ export default function useSetup() {
     if (await init(finalRate, finalLBPAmount, finalUSDAmount)) {
 
       // return Redirect({ href: '/' })
-      router.replace('/');
+      router.replace('/home');
 
 
     }

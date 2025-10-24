@@ -1,17 +1,19 @@
+import { deleteWithdraw } from '@/backend/business-layer/presets/withdraws';
 import { deleteDeposit, findDepositByID } from '@/backend/business-layer/transactions/Deposit';
-import { deleteWithdraw, findWithdrawByID } from '@/backend/business-layer/transactions/Withdraw';
+import { findWithdrawByID } from '@/backend/business-layer/transactions/Withdraw';
 import formatDate from '@/src/util/formatDate';
 import { numberToMoney } from '@/src/util/numberToMoney';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import BackArrow from '../util/BackArrow';
 import Button from '../util/Button';
 import Error from '../util/Error';
 import Loading from '../util/Loading';
-import Modal from '../util/Modal';
 import Title from '../util/Title';
+import DeleteModal from './transactionDetails/DeleteModal';
 
 export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }) {
 
@@ -20,7 +22,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
 
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: [isDeposit ? "getDeposit" : "getWithdraw"], queryFn: async () => {
+    queryKey: [isDeposit ? "getDeposit" : "getWithdraw", id], queryFn: async () => {
 
       return await (isDeposit ? findDepositByID : findWithdrawByID)(id);
 
@@ -28,6 +30,39 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
   });
 
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async () => { return await isDeposit ? deleteDeposit(id) : deleteWithdraw(id); },
+    onSuccess: async (result) => {
+      router.back();
+
+      Toast.show({
+        type: "success",
+        text1: "Success!",
+        text2: `Deletion done successfully`,
+      });
+
+      // Refresh balances
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [isLBP ? "lbpBalance" : "usdBalance"] }),
+        queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"] })
+      ]);
+
+
+    },
+    onError: (err: any) => {
+      Toast.show({
+        type: "error",
+        text1: "Error!",
+        text2: err.message || `Deletion failed. Please try again later.`,
+      });
+    },
+  });
+
+  const deleteFn = () => mutation.mutate();
 
 
   if (isLoading) {
@@ -45,6 +80,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
   }
 
   const { isLBP, amount, title, date } = data
+
 
 
   return (
@@ -82,26 +118,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
         </View>
 
       </ScrollView>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} className='p-6 gap-2'>
-        <Text className='text-destroy underline text-[30px] font-bold'>Confirm Delete?</Text>
-        <Text className='text-xl'>Deleting this transaction will permanently change the balance. Confirm deletion?</Text>
-        <Button pressableProps={{ className: "w-full h-20 border-[1px] border-destroy rounded-xl justify-center items-center", onPress: () => { setIsOpen(false) } }} textProps={{ className: "text-destroy text-3xl " }}>
-          Cancel
-        </Button>
-        <Button pressableProps={{
-          className: "w-full h-20 bg-destroy rounded-xl justify-center items-center", onPress: async () => {
-
-            const success = await (isDeposit ? deleteDeposit : deleteWithdraw)(id);
-
-
-            if (success) {
-              router.back();
-            }
-          }
-        }} textProps={{ className: "text-secondary text-3xl " }}>
-          Confirm
-        </Button>
-      </Modal>
+      <DeleteModal isOpen={isOpen} setIsOpen={setIsOpen} isDeposit={isDeposit} deleteFn={deleteFn} />
     </>
   )
 }

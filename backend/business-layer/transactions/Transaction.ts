@@ -15,7 +15,7 @@ export const TransactionSchema = z.object(
     ),
     date: z.preprocess((val) =>
       new Date(val as string).toISOString(), z.string().datetime()),
-    presetID: z.number().positive().nullable()
+    presetID: z.number().positive().nullable().optional()
   }
 )
 

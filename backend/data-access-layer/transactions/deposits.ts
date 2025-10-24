@@ -29,5 +29,7 @@ export async function deleteDeposit(id: number) {
 
 export async function getAllDeposits() {
 
+  console.log("HI Dep");
+
   return await getAllTransactions({ isDeposit: true })
 }

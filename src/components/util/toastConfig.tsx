@@ -1,12 +1,12 @@
 import { destroy, primary } from "@/src/css";
-import { ErrorToast, SuccessToast } from "react-native-toast-message";
+import { ErrorToast, SuccessToast, ToastProps } from "react-native-toast-message";
 
 const toastConfig = {
   /*
     Overwrite 'success' type,
     by modifying the existing `BaseToast` component
   */
-  success: (props) => (
+  success: (props: ToastProps) => (
     <SuccessToast
       {...props}
       style={{ borderLeftColor: primary, borderLeftWidth: 20, width: "80%", marginTop: 10, height: 75 }}
@@ -25,7 +25,7 @@ const toastConfig = {
     Overwrite 'error' type,
     by modifying the existing `ErrorToast` component
   */
-  error: (props) => (
+  error: (props: ToastProps) => (
     <ErrorToast
       {...props}
       style={{ borderLeftColor: destroy, borderLeftWidth: 20, width: "80%", marginTop: 10, height: 75 }}
