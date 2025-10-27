@@ -4,7 +4,7 @@ import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter'
 import { numberToMoney } from '@/src/util/numberToMoney';
 import React from 'react';
 import { Text, View } from 'react-native';
-import Input from '../../components/util/Input';
+import Input from '../../components/util/inputs/Input';
 import { MIN_AMOUNT } from '../../util/constants';
 
 export default function Amounts({ object, setObject }: { object: initObject; setObject: Setter<initObject> }) {

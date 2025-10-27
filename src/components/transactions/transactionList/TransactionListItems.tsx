@@ -9,23 +9,14 @@ import { getAllDeposits } from "@/backend/business-layer/transactions/Deposit";
 import { getAllWithdraws } from "@/backend/business-layer/transactions/Withdraw";
 import getMonthYear from "@/src/util/getMonthYear";
 import { useQuery } from "@tanstack/react-query";
-import EmptyList from "../../util/EmptyList";
-import Error from "../../util/Error";
-import Loading from "../../util/Loading";
+import EmptyList from "../../util/state/EmptyList";
+import Error from "../../util/state/Error";
+import Loading from "../../util/state/Loading";
 import NewTransactionButton from "./NewTransactionButton";
 
-export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean, color: string }) {
 
 
-  const { data, isLoading, isError } = useQuery({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"], queryFn: isDeposit ? getAllDeposits : getAllWithdraws });
-
-
-
-  if (isLoading)
-    return <Loading size="medium" />
-
-  if (isError || !data)
-    return <Error message={`${isDeposit ? "Deposit" : "Withdraw"}s not availbale. Please try again later.`} />
+function dataToSections(data: Transaction[]) {
 
 
   const currentMonthYear = getMonthYear(new Date());
@@ -46,6 +37,26 @@ export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean,
       ? { title: "Current Month", data: s.data }
       : s
   );
+
+  return sections;
+}
+
+export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean, color: string }) {
+
+
+  const { data, isLoading, isError } = useQuery({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"], queryFn: isDeposit ? getAllDeposits : getAllWithdraws });
+
+
+
+  if (isLoading)
+    return <Loading size="medium" />
+
+  if (isError || !data)
+    return <Error message={`${isDeposit ? "Deposit" : "Withdraw"}s not availbale. Please try again later.`} />
+
+
+  const sections = dataToSections(data);
+
 
   return <SectionList
     sections={sections}

@@ -13,7 +13,6 @@ export const PresetSchema = z.object({
   title: z.string().min(3),
   amount: z.number().positive(),
   isLBP: z.preprocess((val) => typeof val === 'number' ? !!val : !!val, z.boolean()),
-  isDeposit: z.preprocess((val) => typeof val === 'number' ? !!val : !!val, z.boolean()),
 });
 
 export type Preset = z.infer<typeof PresetSchema>;

@@ -1,14 +1,17 @@
-import DepositWithdrawTabs from '@/src/components/util/DepositWithdrawTabs'
+import DepositWithdrawTabs from '@/src/components/util/containers/DepositWithdrawTabs'
 import { secondary } from '@/src/css'
 import { router, Stack } from 'expo-router'
 import React from 'react'
 
 export default function _layout() {
+
+  const setIsWithdraw = (isWithdraw: boolean) => {
+    if (isWithdraw)
+      router.push("/presets/withdraws/list")
+  }
+
   return (
-    <DepositWithdrawTabs isWithdraw={false} setIsWithdraw={(isWithdraw) => {
-      if (isWithdraw)
-        router.push("/presets/withdraws/list")
-    }}>
+    <DepositWithdrawTabs isWithdraw={false} setIsWithdraw={setIsWithdraw}>
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: secondary }, animation: "fade" }} initialRouteName='list' />
     </DepositWithdrawTabs>
   )

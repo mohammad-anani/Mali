@@ -2,14 +2,5 @@ import { Stack } from 'expo-router';
 import React from 'react';
 
 export default function Layout() {
-
-  return <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#3E3E3E" }, animation: "fade" }}  >
-    <Stack.Screen name='deposits' />
-
-
-  </Stack>
-
-
-
-
+  return <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#3E3E3E" }, animation: "fade", keyboardHandlingEnabled: false }} />
 }

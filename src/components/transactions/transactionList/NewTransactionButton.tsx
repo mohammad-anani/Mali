@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import React from 'react';
-import Button from '../../util/Button';
+import Button from '../../util/buttons/Button';
 
 export default function NewTransactionButton({ isDeposit }: { isDeposit: boolean }) {
 

@@ -2,13 +2,13 @@ import { createDepositPreset as create, deleteDepositPreset as del, findDepositP
 import { z } from 'zod';
 import { AddPresetSchema, PresetSchema } from './transactions';
 
-export const DepositPresetSchema = PresetSchema.extend({ isDeposit: z.literal(true) });
+export const DepositPresetSchema = PresetSchema
 export type DepositPreset = z.infer<typeof DepositPresetSchema>;
 
-export const AddDepositPresetSchema = AddPresetSchema.extend({ isDeposit: z.literal(true) });
+export const AddDepositPresetSchema = AddPresetSchema
 export type AddDepositPreset = z.infer<typeof AddDepositPresetSchema>;
 
-export async function createDeposit(preset: AddDepositPreset) {
+export async function createDepositPreset(preset: AddDepositPreset) {
   const parsed = AddDepositPresetSchema.safeParse(preset);
   if (!parsed.success) {
     console.error('createDeposit preset validation failed', parsed.error.format());
@@ -17,7 +17,7 @@ export async function createDeposit(preset: AddDepositPreset) {
   return await create(preset);
 }
 
-export async function findDeposit(id: number) {
+export async function findDepositPreset(id: number) {
   const p = await findByID(id);
   if (!p) return null;
   const parsed = DepositPresetSchema.safeParse(p);
@@ -25,7 +25,7 @@ export async function findDeposit(id: number) {
   return parsed.data as DepositPreset;
 }
 
-export async function updateDeposit(preset: DepositPreset) {
+export async function updateDepositPreset(preset: DepositPreset) {
   const parsed = DepositPresetSchema.safeParse(preset);
   if (!parsed.success) {
     console.error('updateDeposit validation failed', parsed.error.format());
@@ -34,7 +34,7 @@ export async function updateDeposit(preset: DepositPreset) {
   return await update(preset);
 }
 
-export async function deleteDeposit(id: number) {
+export async function deleteDepositPreset(id: number) {
   return await del(id);
 }
 

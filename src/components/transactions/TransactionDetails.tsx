@@ -1,91 +1,41 @@
-import { deleteWithdraw } from '@/backend/business-layer/presets/withdraws';
-import { deleteDeposit, findDepositByID } from '@/backend/business-layer/transactions/Deposit';
-import { findWithdrawByID } from '@/backend/business-layer/transactions/Withdraw';
 import formatDate from '@/src/util/formatDate';
 import { numberToMoney } from '@/src/util/numberToMoney';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import Toast from 'react-native-toast-message';
-import BackArrow from '../util/BackArrow';
-import Button from '../util/Button';
-import Error from '../util/Error';
-import Loading from '../util/Loading';
-import Title from '../util/Title';
+import BackArrow from '../util/buttons/BackArrow';
+import Button from '../util/buttons/Button';
+import Error from '../util/state/Error';
+import Loading from '../util/state/Loading';
+import Title from '../util/ui/Title';
 import DeleteModal from './transactionDetails/DeleteModal';
+import useTransactionDetails from './transactionDetails/useTransactionDetails';
 
 export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }) {
 
-  const param = useLocalSearchParams<{ id: string }>();
-  const id = +param.id;
 
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [isDeposit ? "getDeposit" : "getWithdraw", id], queryFn: async () => {
-
-      return await (isDeposit ? findDepositByID : findWithdrawByID)(id);
-
-    }
-  });
-
-  const [isOpen, setIsOpen] = useState(false);
-
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: async () => { return await isDeposit ? deleteDeposit(id) : deleteWithdraw(id); },
-    onSuccess: async (result) => {
-      router.back();
-
-      Toast.show({
-        type: "success",
-        text1: "Success!",
-        text2: `Deletion done successfully`,
-      });
-
-      // Refresh balances
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: [isLBP ? "lbpBalance" : "usdBalance"] }),
-        queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"] })
-      ]);
-
-
-    },
-    onError: (err: any) => {
-      Toast.show({
-        type: "error",
-        text1: "Error!",
-        text2: err.message || `Deletion failed. Please try again later.`,
-      });
-    },
-  });
-
-  const deleteFn = () => mutation.mutate();
-
+  const { isLoading, isError, transaction: data, isOpen, setIsOpen, deleteFn } = useTransactionDetails(isDeposit);
 
   if (isLoading) {
     return <>
-      <BackArrow size={60} color='black' onPress={() => { router.back() }} />
+      <BackArrow size={60} color='black' />
       <Loading size='medium' />
     </>
   }
 
   if (isError || !data) {
     return <>
-      <BackArrow size={60} color='black' onPress={() => { router.back() }} />
+      <BackArrow size={60} color='black' />
       <Error message={`${isDeposit ? "Deposit" : "Withdraw"} retreiving failed. Please try again later`} />
     </>
   }
 
-  const { isLBP, amount, title, date } = data
 
+  const { isLBP, amount, title, date } = data
 
 
   return (
     <>
-      <BackArrow size={60} color='black' onPress={() => { router.back() }} />
+      <BackArrow size={60} color='black' />
 
 
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}

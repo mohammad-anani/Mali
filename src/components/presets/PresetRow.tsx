@@ -8,11 +8,13 @@ export default function PresetRow({ preset, isWithdraw }: { preset: Preset; isWi
 
   const { id, amount, isLBP, title } = preset;
 
+  const onPress = () => { router.push((isWithdraw ? `/actions/withdraws/${id}` : `/actions/deposits/${id}`) as ExternalPathString); }
+  const amountFormat = numberToMoney(amount) + " " + (isLBP ? "LBP" : "USD")
   return (
-    <Pressable onPress={() => { router.push((isWithdraw ? `/actions/withdraws/${id}` : `/actions/deposits/${id}`) as ExternalPathString); }} className={`w-full rounded-full h-14 ${isWithdraw ? "bg-destroyLight" : "bg-primaryLight"} flex-row justify-between px-4 items-center`} >
+    <Pressable onPress={onPress} className={`w-full rounded-full h-14 ${isWithdraw ? "bg-destroyLight" : "bg-primaryLight"} flex-row justify-between px-4 items-center`} >
       <Text className='text-[16px]'>{title}</Text>
       <View className='flex-row'>
-        <Text className='text-[16px]'>{numberToMoney(amount) + " " + (isLBP ? "LBP" : "USD")}</Text>
+        <Text className='text-[16px]'>{amountFormat}</Text>
       </View>
     </Pressable>
   )

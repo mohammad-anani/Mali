@@ -1,5 +1,5 @@
-import Logo from '@/src/components/util/Logo'
-import LogoName from '@/src/components/util/LogoName'
+import Logo from '@/src/components/util/ui/Logo'
+import LogoName from '@/src/components/util/ui/LogoName'
 import React from 'react'
 import { View } from 'react-native'
 

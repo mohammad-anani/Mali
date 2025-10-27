@@ -1,7 +1,7 @@
 import { getTotalLBPBalance, getTotalUSDBalance } from "@/backend/business-layer/transactions/balance";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useHome() {
+export default function useBalance() {
 
 
   const { data: u, isError, isLoading } = useQuery({ queryKey: ["usdBalance"], queryFn: getTotalUSDBalance })

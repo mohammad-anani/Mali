@@ -1,4 +1,4 @@
-import toastConfig from '@/src/components/util/toastConfig';
+import toastConfig from '@/src/components/util/config/toastConfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
@@ -24,7 +24,7 @@ export default function Layout() {
 
   useEffect(
     () => {
-      NavigationBar.setButtonStyleAsync("light");
+      NavigationBar.setButtonStyleAsync("light"); //bottom bar buttons color
     }
     , [])
 

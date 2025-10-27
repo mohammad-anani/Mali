@@ -8,7 +8,11 @@ export default function DepositWithdrawTabs({ children, isWithdraw, setIsWithdra
 
   const color = themeColor(isWithdraw);
 
+
   return (
+
+
+
     <View className="pt-10 flex-1">
       <View className="pt-20 flex-row justify-stretch">
         {/* Deposit */}
@@ -55,6 +59,8 @@ export default function DepositWithdrawTabs({ children, isWithdraw, setIsWithdra
       </View>
 
       {/* Content */}
+
+
       <View
         className={`p-5 flex-1 ${color}`}
       >
@@ -62,7 +68,9 @@ export default function DepositWithdrawTabs({ children, isWithdraw, setIsWithdra
           {children}
         </ContentView>
       </View>
+
     </View>
+
   );
 }
 

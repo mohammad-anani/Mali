@@ -1,7 +1,7 @@
 import { primary } from '@/src/css'
 import { ActivityIndicator, View } from 'react-native'
-import Logo from './Logo'
-import LogoName from './LogoName'
+import Logo from '../ui/Logo'
+import LogoName from '../ui/LogoName'
 
 export default function Loading({ size = "large" }: { size?: "large" | "medium" | "small" }) {
 
@@ -20,7 +20,7 @@ export default function Loading({ size = "large" }: { size?: "large" | "medium" 
       </View>)
 
     case "small":
-      return (<View className="flex flex-row  items-center   ">
+      return (<View className="flex flex-row justify-center items-center   ">
 
         <ActivityIndicator size={60} color={primary} />
       </View>)

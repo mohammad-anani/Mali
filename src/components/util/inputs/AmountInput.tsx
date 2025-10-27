@@ -1,23 +1,24 @@
 import { MIN_AMOUNT } from '@/src/util/constants';
 import { numberToMoney } from '@/src/util/numberToMoney';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, TextInputProps, View } from 'react-native';
+import Loading from '../state/Loading';
 import CurrencyToggle from './CurrencyToggle';
-import Error from './Error';
 import Input from './Input';
 
-export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP }: { amount: number | null, isLBP: boolean, balances: [number | null, number | null], isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void }) {
+export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP, inputExtraProps }: { amount: number | null, isLBP: boolean, balances: [number | null, number | null], isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void, inputExtraProps?: TextInputProps }) {
 
 
   const amountError = !!(isLBP && amount && amount % MIN_AMOUNT !== 0);
   const requiredError = hasSubmitted && !amount;
-  const balance = balances[isLBP ? 0 : 1];
+  const balance = balances?.[isLBP ? 0 : 1];
 
   if (!balance && !isDeposit) {
-    return <Error message='Balance could not be retreived.Withdraw cannot be done.' />
+    return <Loading size='small' />
+
   }
 
-  const withdrawExceedsBalance = amount && !isDeposit && balance && amount > balance;
+  const withdrawExceedsBalance = balance !== -1 && amount && !isDeposit && balance && amount > balance;
 
 
   return (
@@ -27,11 +28,13 @@ export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSub
       <View className='flex-row  gap-3 items-stretch'>
 
         <Input
+          {...inputExtraProps}
           className=' flex-1'
           placeholder='25,000'
           keyboardType='numeric'
           value={amount !== null ? String(amount) : ''}
           onChangeText={text => setAmount(text.length ? +text : null)}
+
         />
         <CurrencyToggle isToggled={!isLBP} setIsToggled={(isToggled) => { setIsLBP(!isToggled) }} isDeposit={isDeposit} />
       </View>

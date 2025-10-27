@@ -69,6 +69,17 @@ export async function openDatabase(): Promise<SQLite.SQLiteDatabase | null> {
     // invalid (native NPEs), attempt one fresh reopen before giving up.
     const attemptOpen = async (): Promise<SQLite.SQLiteDatabase> => {
       const d = await SQLite.openDatabaseAsync("mali.db");
+      // Debug: dump the DB handle shape before calling into native code.
+      try {
+        console.debug("openDatabase: got db handle", {
+          db: d,
+          hasExecAsync: typeof (d as any)?.execAsync === "function",
+          hasGetAllAsync: typeof (d as any)?.getAllAsync === "function",
+        });
+      } catch {
+        // ignore logging failures
+      }
+
       // basic sanity check: run a no-op statement to ensure the native DB is ready
       // Use execAsync PRAGMA which we already rely on elsewhere.
       await d.execAsync("PRAGMA foreign_keys = ON;");

@@ -13,9 +13,6 @@ export default function PresetList({
 
 
   const isDeposit = mode === "Deposit";
-
-
-
   const color = isDeposit ? "primary" : "destroy";
 
   return (

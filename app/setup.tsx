@@ -1,5 +1,5 @@
-import BackArrow from '@/src/components/util/BackArrow';
-import Button from '@/src/components/util/Button';
+import BackArrow from '@/src/components/util/buttons/BackArrow';
+import Button from '@/src/components/util/buttons/Button';
 import { secondary2 } from '@/src/css';
 import LogoDisplay from '@/src/features/setup/LogoDisplay';
 import useSetup from '@/src/features/setup/useSetup';

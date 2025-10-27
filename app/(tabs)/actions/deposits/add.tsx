@@ -1,8 +1,8 @@
-import NewPreset from '@/src/components/presets/NewPreset'
+import NewTransaction from '@/src/components/transactions/NewTransaction'
 import React from 'react'
 
 export default function Add() {
   return (
-    <NewPreset />
+    <NewTransaction />
   )
 }
