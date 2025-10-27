@@ -3,6 +3,7 @@ import { background, secondary } from '@/src/css';
 import { Tabs, router } from 'expo-router';
 import { ArrowUpDown, CircleDollarSign, House, Save } from 'lucide-react-native';
 import React, { useEffect } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Layout() {
 
@@ -13,7 +14,8 @@ export default function Layout() {
       if (!dbExists) router.replace('/setup');
     })();
   }, []);
-
+  const insets = useSafeAreaInsets();
+  console.log(insets);
   return (
     <Tabs
       initialRouteName="home"
@@ -21,12 +23,12 @@ export default function Layout() {
 
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarVisibilityAnimationConfig: { hide: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } }, show: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } } }, // 👈 prevents tab bar from moving up
+        tabBarVisibilityAnimationConfig: { hide: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } }, show: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } } },
         tabBarActiveTintColor: secondary,
         tabBarInactiveTintColor: '#f7f4eb52',
         tabBarStyle: {
           backgroundColor: '#324335',
-          height: 70,
+          height: 70 + (insets.bottom ? 12 : 0),
           alignItems: 'center',
         },
         tabBarLabelStyle: { fontSize: 20 },
@@ -35,6 +37,7 @@ export default function Layout() {
         animation: 'shift',
         transitionSpec: { animation: "timing", config: { delay: 0, duration: 100 } },
         lazy: false
+
 
       }}
 

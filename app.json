@@ -13,6 +13,7 @@
     "icon": "./assets/images/logo.png",
     "android": {
       "icon": "./assets/images/logo.png",
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "backgroundColor": "#000000"
       },

@@ -1,10 +1,11 @@
 import toastConfig from '@/src/components/util/config/toastConfig';
+import useKeyboardHeight from '@/src/hooks/useKeyboardHeight';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import "../global.css";
 
@@ -28,7 +29,8 @@ export default function Layout() {
     }
     , [])
 
-
+  const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function Layout() {
         <StatusBar barStyle="light-content" translucent={true} />
 
 
-        <SafeAreaView className='flex-1 bg-background'>
+        <SafeAreaView className='flex-1 bg-background' style={{ paddingBottom: insets.bottom && keyboardHeight ? keyboardHeight : 0 }}>
 
           <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#3E3E3E" } }} />
         </SafeAreaView>
