@@ -1,5 +1,8 @@
-import { AddDepositPreset, AddDepositPresetSchema, createDepositPreset } from '@/backend/business-layer/presets/deposits';
-import { AddWithdrawPreset, AddWithdrawPresetSchema, createWithdrawPreset } from '@/backend/business-layer/presets/withdraws';
+import { AddDepositPreset, AddDepositPresetSchema } from '@/backend/business-layer/presets/deposits';
+import { AddWithdrawPreset, AddWithdrawPresetSchema } from '@/backend/business-layer/presets/withdraws';
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import getMode from '@/src/util/getMode';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -32,7 +35,7 @@ export default function useNewPreset(isDeposit: boolean) {
     return () => clearTimeout(timeout);
   }, [isSubmitError]);
 
-  const mode = isDeposit ? "Deposit" : "Withdraw"
+  const mode = getMode(isDeposit);
 
 
   //action on submit
@@ -54,8 +57,8 @@ export default function useNewPreset(isDeposit: boolean) {
       throw new Error(`${mode} failed`);
     }
 
-    const action = isDeposit ? createDepositPreset : createWithdrawPreset;
-    const id = await action(data);
+    const action = BUSINESS_FN.presets.create.of(isDeposit);
+    const id = await action(data as any);
 
     if (!id) {
       throw new Error(`${mode} failed`);
@@ -84,7 +87,7 @@ export default function useNewPreset(isDeposit: boolean) {
       });
 
 
-      await queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDepositPresets" : "getWithdrawPresets"] })
+      await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list })
 
     },
     onError: (err: any) => {

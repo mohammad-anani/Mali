@@ -1,3 +1,4 @@
+import { Deposit } from "@/backend/business-layer/transactions/Deposit";
 import { createTransaction, deleteTransaction, findTransactionByID, getAllTransactions } from "./transactions";
 
 export async function createDeposit(deposit: any) {
@@ -9,7 +10,7 @@ export async function findDepositByID(id: number) {
   const transaction = await findTransactionByID(id);
 
   if (!transaction || !transaction.id) {
-    return transaction
+    return transaction as Deposit
   }
 
   if (!transaction.isDeposit) {
@@ -18,7 +19,7 @@ export async function findDepositByID(id: number) {
   }
 
   delete transaction.isDeposit;
-  return transaction;
+  return transaction as Deposit;
 
 }
 

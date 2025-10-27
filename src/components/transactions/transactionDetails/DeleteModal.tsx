@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import Button from '../../util/buttons/Button';
 import Modal from '../../util/containers/Modal';
 
-export default function DeleteModal({ isOpen, setIsOpen, isDeposit, deleteFn }: { isOpen: boolean, setIsOpen: (s: boolean) => void, isDeposit: boolean, deleteFn: () => void }) {
+export default function DeleteModal({ isOpen, setIsOpen, deleteFn }: { isOpen: boolean, setIsOpen: (s: boolean) => void, deleteFn: () => void }) {
 
 
   return (

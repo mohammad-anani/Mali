@@ -1,11 +1,13 @@
+import getMode from '@/src/util/getMode';
+import themeColor from '@/src/util/themeColor';
 import { router } from 'expo-router';
 import React from 'react';
 import Button from '../../util/buttons/Button';
 
 export default function NewTransactionButton({ isDeposit }: { isDeposit: boolean }) {
 
-  const color = isDeposit ? "primary" : "destroy";
-  const mode = isDeposit ? "Deposit" : "Withdraw"
+  const color = themeColor(isDeposit);
+  const mode = getMode(isDeposit)
 
   return (
     <Button

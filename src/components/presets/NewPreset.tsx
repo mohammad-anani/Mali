@@ -1,4 +1,5 @@
 import useKeyboard from '@/src/hooks/useKeyboard';
+import themeColor from '@/src/util/themeColor';
 import { ScrollView, View } from 'react-native';
 import BackArrow from '../util/buttons/BackArrow';
 import Button from '../util/buttons/Button';
@@ -20,7 +21,7 @@ export default function NewPreset({ isDeposit }: { isDeposit: boolean }) {
     return <Loading size="medium" />
 
 
-
+  const color = themeColor(isDeposit)
 
   return (
     <ScrollView nestedScrollEnabled={true} contentContainerClassName='flex-1'>
@@ -38,7 +39,7 @@ export default function NewPreset({ isDeposit }: { isDeposit: boolean }) {
         <Button
           pressableProps={{
             disabled: isSubmitError,
-            className: `h-20 rounded-3xl bg-${isDeposit ? "primary" : "destroy"} items-center justify-center disabled:bg-muted`,
+            className: `h-20 rounded-3xl bg-${color} items-center justify-center disabled:bg-muted`,
             onPress: submit
           }}
           textProps={{

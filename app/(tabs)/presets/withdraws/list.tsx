@@ -4,7 +4,7 @@ import React from 'react'
 
 
 export default function List() {
-  return <PresetList mode='Withdraw' />
+  return <PresetList />
 }
 
 

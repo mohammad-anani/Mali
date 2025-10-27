@@ -1,6 +1,6 @@
-import { deleteWithdraw } from "@/backend/business-layer/transactions/Withdraw";
-import { deleteDeposit, findDepositByID } from "@/backend/data-access-layer/transactions/deposits";
-import { findWithdrawByID } from "@/backend/data-access-layer/transactions/withdraws";
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import useBalance from "@/src/hooks/useBalance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -11,21 +11,33 @@ export default function useTransactionDetails(isDeposit: boolean) {
   const id = +param.id;
 
 
+  const itemFn = BUSINESS_FN.transactions.item.byId(isDeposit);
   const { data, isLoading, isError } = useQuery({
-    queryKey: [isDeposit ? "getDeposit" : "getWithdraw", id], queryFn: async () => {
+    queryKey: QUERY_KEYS.transactions.item.byId(isDeposit, id), queryFn: async () => {
 
-      return await (isDeposit ? findDepositByID : findWithdrawByID)(id);
+      return await itemFn(id as number);
 
     }
   });
 
-  const [isOpen, setIsOpen] = useState(false);
 
+  const { lbpBalance, usdBalance } = useBalance();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const balance = data?.isLBP ? lbpBalance : usdBalance
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async () => { return await isDeposit ? deleteDeposit(id) : deleteWithdraw(id); },
+    mutationFn: async () => {
+
+      if (isDeposit && balance && data?.amount && ((balance - data.amount) < 0)) {
+        throw new Error("Balance cannot be negative.")
+      }
+
+      const deleteFn = BUSINESS_FN.transactions.delete.of(isDeposit);
+      return await deleteFn(id as number);
+    },
     onSuccess: async (result) => {
       router.back();
 
@@ -37,8 +49,8 @@ export default function useTransactionDetails(isDeposit: boolean) {
 
       // Refresh balances
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: [data.isLBP ? "lbpBalance" : "usdBalance"] }),
-        queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"] })
+        queryClient.invalidateQueries({ queryKey: data?.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd }),
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list })
       ]);
 
 

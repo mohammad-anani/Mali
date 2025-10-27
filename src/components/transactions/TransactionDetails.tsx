@@ -68,7 +68,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
         </View>
 
       </ScrollView>
-      <DeleteModal isOpen={isOpen} setIsOpen={setIsOpen} isDeposit={isDeposit} deleteFn={deleteFn} />
+      <DeleteModal isOpen={isOpen} setIsOpen={setIsOpen} deleteFn={deleteFn} />
     </>
   )
 }

@@ -1,16 +1,10 @@
-import { getTotalLBPBalance, getTotalUSDBalance } from "@/backend/business-layer/transactions/balance";
-import { useQuery } from "@tanstack/react-query";
+import useBalance from "@/src/hooks/useBalance";
 
 export default function useHome() {
 
 
-  const { data: u, isError, isLoading } = useQuery({ queryKey: ["usdBalance"], queryFn: getTotalUSDBalance })
-  const { data: l, isError: isError2, isLoading: isLoading2 } = useQuery({ queryKey: ["lbpBalance"], queryFn: getTotalLBPBalance })
+  const { lbpBalance, usdBalance, isError, isLoading } = useBalance();
 
-  const usdBalance = u as number | null;
-  const lbpBalance = l as number | null;
-
-
-  return { usdBalance, lbpBalance, isError: isError || isError2, isLoading: isLoading || isLoading2 }
+  return { usdBalance, lbpBalance, isError, isLoading }
 
 }

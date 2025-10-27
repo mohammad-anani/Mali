@@ -1,3 +1,4 @@
+import { Withdraw } from "@/backend/business-layer/transactions/Withdraw";
 import { createTransaction, deleteTransaction, findTransactionByID, getAllTransactions } from "./transactions";
 
 export async function createWithdraw(withdraw: any) {
@@ -8,7 +9,7 @@ export async function findWithdrawByID(id: number) {
   const transaction = await findTransactionByID(id);
 
   if (!transaction || !transaction.id) {
-    return transaction
+    return transaction as Withdraw
   }
 
   if (transaction.isDeposit) {
@@ -17,7 +18,7 @@ export async function findWithdrawByID(id: number) {
   }
 
   delete transaction.isDeposit;
-  return transaction;
+  return transaction as Withdraw;
 
 }
 

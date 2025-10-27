@@ -8,6 +8,6 @@ import React from 'react'
 export default function List() {
 
   return (
-    <TransactionList mode="Deposit" />
+    <TransactionList isDeposit />
   )
 }

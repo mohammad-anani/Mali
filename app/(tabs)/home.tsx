@@ -14,8 +14,8 @@ export default function Home() {
     <ScrollView stickyHeaderIndices={[1]} className=' flex-1 ' contentContainerClassName=' p-5 gap-6' showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
       <Header />
       <Balance usdBalance={usdBalance} lbpBalance={lbpBalance} isLoading={isLoading} isError={isError} />
-      <QuickTransaction balances={[lbpBalance, usdBalance]} mode='Deposit' />
-      <QuickTransaction balances={[lbpBalance, usdBalance]} mode='Withdraw' />
+      <QuickTransaction balances={[lbpBalance, usdBalance]} isDeposit />
+      <QuickTransaction balances={[lbpBalance, usdBalance]} />
     </ScrollView>
   )
 }

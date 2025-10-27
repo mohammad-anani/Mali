@@ -5,9 +5,11 @@ import TransactionRow from "../TransactionRow";
 import { TransactionListFooter } from "./TransactionListFooter";
 import { TransactionListHeader } from "./TransactionListHeader";
 
-import { getAllDeposits } from "@/backend/business-layer/transactions/Deposit";
-import { getAllWithdraws } from "@/backend/business-layer/transactions/Withdraw";
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import getMode from "@/src/util/getMode";
 import getMonthYear from "@/src/util/getMonthYear";
+import themeColor from "@/src/util/themeColor";
 import { useQuery } from "@tanstack/react-query";
 import EmptyList from "../../util/state/EmptyList";
 import Error from "../../util/state/Error";
@@ -41,18 +43,20 @@ function dataToSections(data: Transaction[]) {
   return sections;
 }
 
-export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean, color: string }) {
+export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
 
+  const color = themeColor(isDeposit);
+  const listFn = BUSINESS_FN.transactions.list.of(isDeposit);
+  const keys = QUERY_KEYS.transactions.of(isDeposit);
+  const { data, isLoading, isError } = useQuery({ queryKey: keys.list, queryFn: listFn });
 
-  const { data, isLoading, isError } = useQuery({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"], queryFn: isDeposit ? getAllDeposits : getAllWithdraws });
-
-
+  const mode = getMode(isDeposit)
 
   if (isLoading)
     return <Loading size="medium" />
 
   if (isError || !data)
-    return <Error message={`${isDeposit ? "Deposit" : "Withdraw"}s not availbale. Please try again later.`} />
+    return <Error message={`${mode}s not availbale. Please try again later.`} />
 
 
   const sections = dataToSections(data);
@@ -61,7 +65,7 @@ export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean,
   return <SectionList
     sections={sections}
 
-    ListEmptyComponent={() => <EmptyList entity={`${isDeposit ? "Deposit" : "Withdraw"} Presets`}>
+    ListEmptyComponent={() => <EmptyList entity={`${mode} Presets`}>
       <NewTransactionButton isDeposit={isDeposit} />
     </EmptyList>}
     keyExtractor={(item) => item.id.toString()}

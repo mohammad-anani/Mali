@@ -11,12 +11,12 @@ import { TextInput, View } from 'react-native';
 
 
 
-export default function QuickTransaction({ mode, balances }: { mode: "Deposit" | "Withdraw", balances: [number | null, number | null] }) {
+export default function QuickTransaction({ isDeposit = false, balances }: { isDeposit?: boolean, balances: [number | null, number | null] }) {
 
 
 
 
-  const { isDeposit, object, setObject, hasSubmitted, isSubmitError, submit, isLoading } = useQuickTransaction(mode);
+  const { mode, object, setObject, hasSubmitted, isSubmitError, submit, isLoading } = useQuickTransaction(isDeposit);
 
 
   const amountRef = useRef<TextInput>(null);

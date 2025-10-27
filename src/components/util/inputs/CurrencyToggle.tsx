@@ -1,3 +1,4 @@
+import themeColor from '@/src/util/themeColor';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
@@ -6,7 +7,7 @@ import { Pressable, Text, View } from 'react-native';
 
 export default function CurrencyToggle({ isToggled, setIsToggled, isDeposit }: { isToggled: boolean, setIsToggled: (isToggled: boolean) => void, isDeposit: boolean }) {
   const baseViewClass = 'w-[75px] rounded-full h-[90%]';
-  const activeViewClass = isDeposit ? 'bg-primary' : "bg-destroy";
+  const activeViewClass = themeColor(isDeposit);
   const baseTextClass = 'text-[22px] text-center mt-2';
   const activeTextClass = 'text-secondary';
 

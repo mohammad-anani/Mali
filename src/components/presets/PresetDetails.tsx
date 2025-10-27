@@ -61,7 +61,7 @@ export default function PresetDetails({ isDeposit }: { isDeposit: boolean }) {
           <Button pressableProps={{ className: "w-full justify-center items-center bg-destroy rounded-3xl h-20", onPress: () => { setIsOpen(true) } }} textProps={{ className: "text-4xl text-secondary" }}>Delete</Button>
         </View>
       </ScrollView>
-      <DeleteModal isOpen={isOpen} setIsOpen={setIsOpen} deleteFn={deleteFn} isDeposit={isDeposit} />
+      <DeleteModal isOpen={isOpen} setIsOpen={setIsOpen} deleteFn={deleteFn} />
     </>
   )
 }

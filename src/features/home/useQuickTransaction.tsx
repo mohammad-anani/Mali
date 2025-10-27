@@ -1,7 +1,8 @@
 import { AddDeposit, AddDepositSchema } from "@/backend/business-layer/transactions/Deposit";
 import { AddWithdraw, AddWithdrawSchema } from "@/backend/business-layer/transactions/Withdraw";
-import { createDeposit } from "@/backend/data-access-layer/transactions/deposits";
-import { createWithdraw } from "@/backend/data-access-layer/transactions/withdraws";
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import getMode from "@/src/util/getMode";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
@@ -13,7 +14,7 @@ export type QuickTransactionForm = {
 };
 
 export default function useQuickTransaction(
-  mode: "Deposit" | "Withdraw",
+  isDeposit: boolean
 
 ) {
 
@@ -32,7 +33,7 @@ export default function useQuickTransaction(
 
 
   const queryClient = useQueryClient();
-  const isDeposit = mode === "Deposit";
+  const mode = getMode(isDeposit);
 
 
   //disable button for 5s if submitError is true
@@ -58,8 +59,8 @@ export default function useQuickTransaction(
       throw new Error("Validation failed");
     }
 
-    const action = isDeposit ? createDeposit : createWithdraw;
-    const id = await action(data);
+    const action = BUSINESS_FN.transactions.create.of(isDeposit);
+    const id = await action(data as any);
 
     if (!id) {
       throw new Error(`${mode} failed`);
@@ -85,8 +86,8 @@ export default function useQuickTransaction(
 
       // Refresh balances
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: [result.isLBP ? "lbpBalance" : "usdBalance"] }),
-        queryClient.invalidateQueries({ queryKey: [isDeposit ? "getDeposits" : "getWithdraws"] }),
+        queryClient.invalidateQueries({ queryKey: result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd }),
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
       ]);
 
 
@@ -103,7 +104,7 @@ export default function useQuickTransaction(
   const submit = () => mutation.mutate();
 
   return {
-    isDeposit,
+    mode,
     object,
     setObject,
     hasSubmitted,

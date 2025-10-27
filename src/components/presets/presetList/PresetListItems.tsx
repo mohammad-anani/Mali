@@ -2,8 +2,9 @@ import React from "react";
 import { FlatList } from "react-native";
 
 
-import { getAllDepositPresets } from "@/backend/business-layer/presets/deposits";
-import { getAllWithdrawPresets } from "@/backend/business-layer/presets/withdraws";
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import getMode from "@/src/util/getMode";
 import { useQuery } from "@tanstack/react-query";
 import EmptyList from "../../util/state/EmptyList";
 import Error from "../../util/state/Error";
@@ -12,25 +13,27 @@ import PresetRow from "../PresetRow";
 import NewPresetButton from "./NewPresetButton";
 
 
-export function TransactionListItems({ color, isDeposit }: { isDeposit: boolean, color: string }) {
+export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
 
 
-  const { data, isLoading, isError } = useQuery({ queryKey: [isDeposit ? "getDepositPresets" : "getWithdrawPresets"], queryFn: isDeposit ? getAllDepositPresets : getAllWithdrawPresets });
+  const listFn = BUSINESS_FN.presets.list.of(isDeposit);
+  const keys = QUERY_KEYS.presets.of(isDeposit);
+  const { data, isLoading, isError } = useQuery({ queryKey: keys.list, queryFn: listFn });
 
-
+  const mode = getMode(isDeposit)
 
   if (isLoading)
     return <Loading size="medium" />
 
   if (isError || !data)
-    return <Error message={`${isDeposit ? "Deposit" : "Withdraw"}s not availbale. Please try again later.`} />
+    return <Error message={`${mode}s not availbale. Please try again later.`} />
 
 
   return <FlatList
 
     data={data}
     keyExtractor={(item) => item.id.toString()}
-    ListEmptyComponent={() => <EmptyList entity={`${isDeposit ? "Deposit" : "Withdraw"} Presets`}>
+    ListEmptyComponent={() => <EmptyList entity={`${mode} Presets`}>
       <NewPresetButton isDeposit={isDeposit} />
     </EmptyList>}
     renderItem={({ item }) => (

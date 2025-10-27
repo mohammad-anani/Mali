@@ -1,5 +1,5 @@
-import { deleteDepositPreset, findDepositPreset } from '@/backend/business-layer/presets/deposits';
-import { deleteWithdrawPreset, findWithdrawPreset } from '@/backend/business-layer/presets/withdraws';
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import { useQuery } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
@@ -10,10 +10,11 @@ export default function usePresetDetails(isDeposit: boolean) {
   const id = +param.id;
 
 
+  const itemFn = BUSINESS_FN.presets.item.byId(isDeposit);
   const { data, isLoading, isError } = useQuery({
-    queryKey: [isDeposit ? "getDeposit" : "getWithdraw"], queryFn: async () => {
+    queryKey: QUERY_KEYS.presets.item.byId(isDeposit, id), queryFn: async () => {
 
-      return await (isDeposit ? findDepositPreset : findWithdrawPreset)(id);
+      return await itemFn(id as number);
 
     }
   });
@@ -22,7 +23,8 @@ export default function usePresetDetails(isDeposit: boolean) {
 
   const deleteFn = async () => {
 
-    const success = await (isDeposit ? deleteDepositPreset : deleteWithdrawPreset)(id);
+    const deleteFn = BUSINESS_FN.presets.delete.of(isDeposit);
+    const success = await deleteFn(id as number);
 
 
     if (success) {
