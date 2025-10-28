@@ -18,7 +18,7 @@ export function TransactionListFooter({ section, color }: { section: { title: st
 
   return (
     <View
-      className={`flex-row justify-between px-5 mb-8 bg-${color} rounded-full  items-center`}
+      className={`flex-row justify-between px-5 mb-8 ${color} rounded-full  items-center`}
     >
       <Text className="text-[26px] text-secondary">Total:</Text>
       <View>

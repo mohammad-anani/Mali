@@ -37,7 +37,7 @@ export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
       <NewPresetButton isDeposit={isDeposit} />
     </EmptyList>}
     renderItem={({ item }) => (
-      <PresetRow preset={item} isWithdraw={!isDeposit} />
+      <PresetRow preset={item} isDeposit={isDeposit} />
 
     )}
 

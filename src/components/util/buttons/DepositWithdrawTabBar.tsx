@@ -4,17 +4,17 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function DepositWithdrawTabBar({ state: { index }, navigation: { navigate } }: BottomTabBarProps) {
-  const isWithdraw = index;
+  const isDeposit = !index;
 
   return (<View className="pt-20 flex-row justify-stretch">
     {/* Deposit */}
     <Pressable
       className="flex flex-row justify-between w-[50%] absolute top-0 left-0"
-      style={{ zIndex: !isWithdraw ? 10 : 0 }}
+      style={{ zIndex: isDeposit ? 10 : 0 }}
       onPress={() => navigate("deposits")}
     >
       <View
-        className={`h-20 w-[80%] justify-center ${!isWithdraw ? 'bg-primary' : 'bg-primaryDark'
+        className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-primary' : 'bg-primaryDark'
           }`}
       >
         <Text className="text-secondary ml-5 text-3xl">Deposits</Text>
@@ -22,7 +22,7 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
       <View
         style={[
           triangleLeft.triangle,
-          { borderTopColor: !isWithdraw ? primary : primaryDark }, // uses primaryDark when inactive
+          { borderTopColor: isDeposit ? primary : primaryDark }, // uses primaryDark when inactive
         ]}
       />
     </Pressable>
@@ -30,17 +30,17 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
     {/* Withdraw */}
     <Pressable
       className="flex flex-row justify-end w-[50%] absolute top-0 right-0"
-      style={{ zIndex: isWithdraw ? 10 : 0 }}
+      style={{ zIndex: isDeposit ? 0 : 10 }}
       onPress={() => navigate("withdraws")}
     >
       <View
         style={[
           triangleRight.triangle,
-          { borderTopColor: isWithdraw ? destroy : destroyDark }, // uses destroyDark when inactive
+          { borderTopColor: isDeposit ? destroyDark : destroy }, // uses destroyDark when inactive
         ]}
       />
       <View
-        className={`h-20 w-[80%] justify-center ${isWithdraw ? 'bg-destroy' : 'bg-destroyDark bg'
+        className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-destroyDark ' : 'bg-destroy'
           }`}
       >
         <Text className="text-secondary text-right mr-5 text-3xl">

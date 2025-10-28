@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import Button from '../../util/buttons/Button';
 
-export default function NewTransactionButton({ isDeposit }: { isDeposit: boolean }) {
+export default function NewTransactionButton({ isDeposit = false }: { isDeposit?: boolean }) {
 
   const color = themeColor(isDeposit);
   const mode = getMode(isDeposit)
@@ -12,7 +12,7 @@ export default function NewTransactionButton({ isDeposit }: { isDeposit: boolean
   return (
     <Button
       pressableProps={{
-        className: `h-20 rounded-3xl bg-${color} items-center justify-center`,
+        className: `h-20 rounded-3xl ${color}  items-center justify-center`,
         onPress: (() => {
 
           router.push(isDeposit ? "/actions/deposits/add" : "/actions/withdraws/add")

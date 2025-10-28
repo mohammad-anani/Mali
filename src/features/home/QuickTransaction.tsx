@@ -37,7 +37,7 @@ export default function QuickTransaction({ isDeposit = false, balances }: { isDe
         <View className='gap-3'>
           <TitleInput title={object.title} setTitle={(t) => { setObject(o => ({ ...o, title: t })) }} hasSubmitted={hasSubmitted} isDeposit={isDeposit} inputExtraProps={{ returnKeyType: "next", onSubmitEditing: () => { amountRef.current?.focus() } }} />
 
-          <AmountInput inputExtraProps={{ ref: amountRef }} amount={object.amount} isLBP={object.isLBP} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} hasSubmitted={hasSubmitted} balances={balances} isDeposit={isDeposit} />
+          <AmountInput inputRef={amountRef} inputExtraProps={{}} amount={object.amount} isLBP={object.isLBP} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} hasSubmitted={hasSubmitted} balances={balances} isDeposit={isDeposit} />
 
           <View className='flex-row justify-end'>
             <Button pressableProps={{ className: `${isDeposit ? "bg-primary" : "bg-destroy"} rounded-full w-[190px] h-[60px] justify-center disabled:bg-muted`, disabled: isSubmitError, onPress: submit }} textProps={{ className: "text-[30px] text-center text-secondary" }}>{mode}</Button>

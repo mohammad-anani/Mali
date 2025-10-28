@@ -1,6 +1,7 @@
 import useKeyboard from '@/src/hooks/useKeyboard';
 import themeColor from '@/src/util/themeColor';
-import { ScrollView, View } from 'react-native';
+import React, { useRef } from 'react';
+import { ScrollView, TextInput, View } from 'react-native';
 import BackArrow from '../util/buttons/BackArrow';
 import Button from '../util/buttons/Button';
 import AmountInput from '../util/inputs/AmountInput';
@@ -13,6 +14,9 @@ import useNewPreset from './newPreset/useNewPreset';
 export default function NewPreset({ isDeposit }: { isDeposit: boolean }) {
 
   const { isLoading, isSubmitError, object, setObject, hasSubmitted, submit } = useNewPreset(isDeposit);
+
+  const titleRef = useRef<TextInput>(null);
+  const amountRef = useRef<TextInput>(null);
 
   const isKeyboardUp = useKeyboard();
 
@@ -32,14 +36,14 @@ export default function NewPreset({ isDeposit }: { isDeposit: boolean }) {
           <BackArrow size={!isKeyboardUp ? 60 : 30} color='black' />
           <View className='gap-5'>
 
-            <TitleInput inputExtraProps={{ autoFocus: true }} title={object.title} setTitle={(t) => { setObject(o => ({ ...o, title: t })) }} isDeposit={isDeposit} hasSubmitted={hasSubmitted} />
-            <AmountInput balances={[-1, -1]} isLBP={object.isLBP} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} amount={object.amount} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} hasSubmitted={hasSubmitted} isDeposit={isDeposit} />
+            <TitleInput inputExtraProps={{ autoFocus: true, ref: titleRef, returnKeyType: 'next', onSubmitEditing: () => amountRef.current?.focus() }} title={object.title} setTitle={(t) => { setObject(o => ({ ...o, title: t })) }} isDeposit={isDeposit} hasSubmitted={hasSubmitted} />
+            <AmountInput inputExtraProps={{ ref: amountRef }} balances={[-1, -1]} isLBP={object.isLBP} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} amount={object.amount} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} hasSubmitted={hasSubmitted} isDeposit={isDeposit} />
           </View>
         </View>
         <Button
           pressableProps={{
             disabled: isSubmitError,
-            className: `h-20 rounded-3xl bg-${color} items-center justify-center disabled:bg-muted`,
+            className: `h-20 rounded-3xl ${color} items-center justify-center disabled:bg-muted`,
             onPress: submit
           }}
           textProps={{

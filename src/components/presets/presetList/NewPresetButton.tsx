@@ -14,7 +14,7 @@ export default function NewPresetButton({ isDeposit }: { isDeposit: boolean }) {
   return (
     <Button
       pressableProps={{
-        className: `h-20 rounded-3xl bg-${color} items-center justify-center`,
+        className: `h-20 rounded-3xl ${color} items-center justify-center`,
         onPress: onPressfn
       }}
       textProps={{

@@ -15,7 +15,6 @@ export default function TransactionList({
   return (
     <View className="flex-1 gap-3">
       <NewTransactionButton isDeposit={isDeposit} />
-
       <TransactionListItems isDeposit={isDeposit} />
     </View>
   );

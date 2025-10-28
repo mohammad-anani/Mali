@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, TextInputProps, View } from 'react-native';
+import { Text, TextInput, TextInputProps, View } from 'react-native';
 import Input from './Input';
 
-export default function TitleInput({ title, isDeposit, setTitle, hasSubmitted, inputExtraProps }: { title: string, isDeposit: boolean, setTitle: (title: string) => void, hasSubmitted: boolean, inputExtraProps?: TextInputProps }) {
+export default function TitleInput({ title, isDeposit, setTitle, hasSubmitted, inputExtraProps, inputRef }: { title: string, isDeposit: boolean, setTitle: (title: string) => void, hasSubmitted: boolean, inputExtraProps?: TextInputProps, inputRef?: React.Ref<TextInput> }) {
 
   const lengthError = !!(title.length && title.length < 3);
   const requiredError = hasSubmitted && !title.length
@@ -10,6 +10,7 @@ export default function TitleInput({ title, isDeposit, setTitle, hasSubmitted, i
     <View className='gap-[2px]'>
       <Text className='ml-5 text-[25px] '>Title:</Text>
       <Input
+        ref={inputRef}
         {...inputExtraProps}
         className=' h-[40px]'
         placeholder={isDeposit ? 'Salary, Gift , ...' : "Food, Rent, ..."}

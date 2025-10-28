@@ -1,3 +1,3 @@
-export default function themeColor(isWithdraw: boolean, prefix = "bg-") {
-  return prefix + (isWithdraw ? 'destroy' : 'primary');
+export default function themeColor(isDeposit: boolean, prefix = "bg-", suffix = "") {
+  return prefix + (isDeposit ? 'primary' : 'destroy') + suffix;
 }

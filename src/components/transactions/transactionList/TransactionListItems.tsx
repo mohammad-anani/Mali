@@ -70,7 +70,7 @@ export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
     </EmptyList>}
     keyExtractor={(item) => item.id.toString()}
     renderItem={({ item }) => (
-      <TransactionRow transaction={item} isWithdraw={!isDeposit} />
+      <TransactionRow transaction={item} isDeposit={isDeposit} />
     )}
     renderSectionHeader={({ section }) => <TransactionListHeader section={section} />}
     stickySectionHeadersEnabled

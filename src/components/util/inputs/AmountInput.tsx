@@ -1,12 +1,12 @@
 import { MIN_AMOUNT } from '@/src/util/constants';
 import { numberToMoney } from '@/src/util/numberToMoney';
 import React from 'react';
-import { Text, TextInputProps, View } from 'react-native';
+import { Text, TextInput, TextInputProps, View } from 'react-native';
 import Loading from '../state/Loading';
 import CurrencyToggle from './CurrencyToggle';
 import Input from './Input';
 
-export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP, inputExtraProps }: { amount: number | null, isLBP: boolean, balances: [number | null, number | null], isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void, inputExtraProps?: TextInputProps }) {
+export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP, inputExtraProps, inputRef }: { amount: number | null, isLBP: boolean, balances: [number | null, number | null], isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void, inputExtraProps?: TextInputProps, inputRef?: React.Ref<TextInput> }) {
 
 
   const amountError = !!(isLBP && amount && amount % MIN_AMOUNT !== 0);
@@ -28,6 +28,7 @@ export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSub
       <View className='flex-row  gap-3 items-stretch'>
 
         <Input
+          ref={inputRef}
           {...inputExtraProps}
           className=' flex-1'
           placeholder='25,000'
