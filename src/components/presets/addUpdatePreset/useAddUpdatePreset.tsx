@@ -1,5 +1,4 @@
-import { AddDepositPreset, AddDepositPresetSchema } from '@/backend/business-layer/presets/deposit';
-import { AddWithdrawPreset, AddWithdrawPresetSchema } from '@/backend/business-layer/presets/withdraws';
+import { AddPreset, AddPresetSchema, Preset } from '@/backend/business-layer/presets/Preset';
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMode from '@/src/util/getMode';
@@ -16,9 +15,9 @@ export type PresetForm = {
 };
 
 
-export default function useNewPreset(isDeposit: boolean) {
+export default function useAddUpdatePreset(isDeposit: boolean, preset?: Preset | null) {
 
-  const [object, setObject] = useState<PresetForm>({ title: "", amount: null, isLBP: true });
+  const [object, setObject] = useState<PresetForm | Preset>(preset ? { title: preset.title, amount: preset.amount, isLBP: preset.isLBP } : { title: "", amount: null, isLBP: true });
 
 
   //submit click
@@ -42,34 +41,30 @@ export default function useNewPreset(isDeposit: boolean) {
   async function submitFn() {
     setHasSubmitted(true);
 
-    const data = object as AddDepositPreset | AddWithdrawPreset;
-    const schema = isDeposit ? AddDepositPresetSchema : AddWithdrawPresetSchema;
+
+    const data = object as AddPreset | Preset;
+    const schema = AddPresetSchema;
 
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
       console.log(parsed.error.format());
       setIsSubmitError(true);
-      Toast.show({
-        type: "error",
-        text1: "Error!",
-        text2: "Validation failed!",
-      });
-      throw new Error(`${mode} failed`);
+
+      throw new Error("Validation failed");
     }
 
-    const action = BUSINESS_FN.presets.create.of(isDeposit);
-    const id = await action(data as any);
+    const id = await preset ? (BUSINESS_FN.presets.edit.of(isDeposit))({ ...object, id: preset?.id } as Preset) : BUSINESS_FN.presets.create.of(isDeposit)(object as AddPreset);
 
-    if (!id) {
-      throw new Error(`${mode} failed`);
+
+    if (!!!id) {
+      throw new Error(`${mode} Preset Saving failed`);
     }
 
-    setObject({ isLBP: true, title: "", amount: null })
+
     router.back();
     // Return useful info to onSuccess()
     return { id, isLBP: object.isLBP };
   }
-
   const queryClient = useQueryClient();
 
 
@@ -83,11 +78,18 @@ export default function useNewPreset(isDeposit: boolean) {
       Toast.show({
         type: "success",
         text1: "Success!",
-        text2: `${mode} Preset added successfully`,
+        text2: `${mode} Preset ${preset ? "updated" : "added"} successfully`,
       });
 
 
-      await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list })
+      Promise.all([
+
+        await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list }),
+
+        await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).item(preset?.id ?? 0) })
+
+
+      ])
 
     },
     onError: (err: any) => {
@@ -95,7 +97,7 @@ export default function useNewPreset(isDeposit: boolean) {
 
         type: "error",
         text1: "Error!",
-        text2: err.message || `${mode} failed. Please try again later.`,
+        text2: err.message || `${mode} ${preset ? "updating" : "adding"} failed. Please try again later.`,
       });
     },
   });

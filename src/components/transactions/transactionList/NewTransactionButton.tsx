@@ -1,3 +1,4 @@
+import { ROUTES } from '@/src/dicts/routes';
 import getMode from '@/src/util/getMode';
 import themeColor from '@/src/util/themeColor';
 import { router } from 'expo-router';
@@ -15,7 +16,7 @@ export default function NewTransactionButton({ isDeposit = false }: { isDeposit?
         className: `h-20 rounded-3xl ${color}  items-center justify-center`,
         onPress: (() => {
 
-          router.push(isDeposit ? "/actions/deposits/add" : "/actions/withdraws/add")
+          router.push(ROUTES.actions.of.add(isDeposit))
 
         })
 

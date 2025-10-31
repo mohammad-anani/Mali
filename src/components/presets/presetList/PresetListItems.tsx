@@ -13,7 +13,7 @@ import PresetRow from "../PresetRow";
 import NewPresetButton from "./NewPresetButton";
 
 
-export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
+export function PresetListItems({ isDeposit }: { isDeposit: boolean }) {
 
 
   const listFn = BUSINESS_FN.presets.list.of(isDeposit);

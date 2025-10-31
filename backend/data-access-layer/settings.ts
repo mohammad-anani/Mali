@@ -1,10 +1,6 @@
-/**
- * Get a setting value by name
- * @param name The name of the setting
- * @returns The value as string, or null if not found
- */
+
 import { openDatabase } from "./general";
-export async function getSetting(name: string): Promise<string | null> {
+export async function getSetting(name: string) {
   try {
     const db = await openDatabase();
     if (!db) {
@@ -22,10 +18,8 @@ export async function getSetting(name: string): Promise<string | null> {
   }
 }
 
-/**
- * Get all settings as an object { [name]: value }
- */
-export async function getSettings(): Promise<[string, string][]> {
+
+export async function getSettings() {
   try {
     const db = await openDatabase();
     if (!db) {
@@ -40,10 +34,6 @@ export async function getSettings(): Promise<[string, string][]> {
   }
 }
 
-/**
- * Insert or update multiple settings
- * @param settings Array of [name, value] tuples
- */
 export async function setSettings(settings: [string, string][]) {
   try {
     const db = await openDatabase();
@@ -62,7 +52,7 @@ export async function setSettings(settings: [string, string][]) {
       );
     }
 
-    return true; // success
+    return true;
   } catch (err) {
     console.error("setSettings error:", err);
     return false;

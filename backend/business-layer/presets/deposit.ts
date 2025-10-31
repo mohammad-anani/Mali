@@ -2,16 +2,16 @@ import { createPreset, deletePreset, findPresetByID, getAllPresets, updatePreset
 import { AddPreset, AddPresetSchema, Preset, PresetSchema } from './Preset';
 
 
-export async function createWithdrawPreset(preset: AddPreset): Promise<number> {
+export async function createDepositPreset(preset: AddPreset): Promise<number> {
   const parsed = AddPresetSchema.safeParse(preset);
   if (!parsed.success) {
-    console.error('createWithdraw preset validation failed', parsed.error.format());
+    console.error('createDeposit preset validation failed', parsed.error.format());
     return 0;
   }
   return await createPreset({ ...preset, isDeposit: false });
 }
 
-export async function findWithdrawPreset(id: number): Promise<Preset | null> {
+export async function findDepositPreset(id: number): Promise<Preset | null> {
   const p = await findPresetByID(id);
   if (!p) return null;
 
@@ -20,19 +20,19 @@ export async function findWithdrawPreset(id: number): Promise<Preset | null> {
   return parsed.data as Preset;
 }
 
-export async function updateWithdrawPreset(preset: Preset): Promise<boolean> {
+export async function updateDepositPreset(preset: Preset): Promise<boolean> {
   const parsed = AddPresetSchema.safeParse(preset);
   if (!parsed.success) {
-    console.error('updateWithdraw validation failed', parsed.error.format());
+    console.error('updateDeposit validation failed', parsed.error.format());
     return false;
   }
   return await updatePreset(preset);
 }
 
-export async function deleteWithdrawPreset(id: number): Promise<boolean> {
+export async function deleteDepositPreset(id: number): Promise<boolean> {
   return await deletePreset(id);
 }
 
-export async function getAllWithdrawPresets(): Promise<Preset[] | null> {
+export async function getAllDepositPresets(): Promise<Preset[] | null> {
   return await getAllPresets({ isDeposit: false });
 }

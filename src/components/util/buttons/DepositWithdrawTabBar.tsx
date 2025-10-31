@@ -1,4 +1,5 @@
 import { destroy, destroyDark, primary, primaryDark } from '@/src/css';
+import { ROUTES } from '@/src/dicts/routes';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -11,7 +12,7 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
     <Pressable
       className="flex flex-row justify-between w-[50%] absolute top-0 left-0"
       style={{ zIndex: isDeposit ? 10 : 0 }}
-      onPress={() => navigate("deposits")}
+      onPress={() => navigate(ROUTES.actions.of.name(true))}
     >
       <View
         className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-primary' : 'bg-primaryDark'
@@ -31,7 +32,7 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
     <Pressable
       className="flex flex-row justify-end w-[50%] absolute top-0 right-0"
       style={{ zIndex: isDeposit ? 0 : 10 }}
-      onPress={() => navigate("withdraws")}
+      onPress={() => navigate(ROUTES.actions.of.name(false))}
     >
       <View
         style={[

@@ -29,14 +29,16 @@ export async function findPresetByID(id: number): Promise<any> {
 }
 
 export async function updatePreset(preset: any) {
+
   try {
-    const { id, title, amount, isLBP, isDeposit } = preset;
+    const { id, title, amount } = preset;
     if (!id) return false;
+
 
     const result = await runDb((db) =>
       db.runAsync(
-        `UPDATE Presets SET title = ?, amount = ?, isLBP = ?, isDeposit = ? WHERE id = ?;`,
-        [title, amount, isLBP ? 1 : 0, isDeposit ? 1 : 0, id]
+        `UPDATE Presets SET title = ?, amount = ? WHERE id = ?;`,
+        [title, amount, id]
       )
     );
 

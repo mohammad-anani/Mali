@@ -75,5 +75,5 @@ export function TransactionListItems({ isDeposit }: { isDeposit: boolean }) {
     renderSectionHeader={({ section }) => <TransactionListHeader section={section} />}
     stickySectionHeadersEnabled
     contentContainerClassName="gap-2"
-    renderSectionFooter={({ section }) => <TransactionListFooter section={section} color={color} />} />;
+    renderSectionFooter={({ section }) => <TransactionListFooter section={section} isDeposit={isDeposit} />} />;
 }

@@ -1,6 +1,6 @@
 import { runDb } from "../general";
 
-export async function createTransaction(transaction: any) {
+export async function createTransactionData(transaction: any) {
   try {
 
     console.log(transaction);
@@ -22,7 +22,7 @@ export async function createTransaction(transaction: any) {
   }
 }
 
-export async function findTransactionByID(id: number): Promise<any> {
+export async function findTransactionByIDData(id: number): Promise<any> {
   try {
     const transaction = await runDb(async (db) =>
       db.getFirstAsync(`SELECT * FROM Transactions WHERE id = ?;`, [id])
@@ -35,7 +35,7 @@ export async function findTransactionByID(id: number): Promise<any> {
   }
 }
 
-export async function deleteTransaction(id: number) {
+export async function deleteTransactionData(id: number) {
   try {
     const result = await runDb(async (db) =>
       db.runAsync(`DELETE FROM Transactions WHERE id = ?;`, [id])
@@ -48,7 +48,7 @@ export async function deleteTransaction(id: number) {
   }
 }
 
-export async function getAllTransactions(filter: any = {}) {
+export async function getAllTransactionsData(filter: any = {}) {
   try {
     // run queries through the serialized runDb helper
 

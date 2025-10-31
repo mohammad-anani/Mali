@@ -9,27 +9,29 @@ import {
   deleteDeposit,
   findDepositByID,
   getAllDeposits,
-} from '@/backend/business-layer/transactions/Deposit';
+} from '@/backend/business-layer/transactions/deposit';
 
 import {
   createWithdraw,
   deleteWithdraw,
   findWithdrawByID,
   getAllWithdraws,
-} from '@/backend/business-layer/transactions/Withdraw';
+} from '@/backend/business-layer/transactions/withdraw';
 
 import {
   createDepositPreset,
   deleteDepositPreset,
   findDepositPreset,
   getAllDepositPresets,
-} from '@/backend/business-layer/presets/deposits';
+  updateDepositPreset,
+} from '@/backend/business-layer/presets/deposit';
 
 import {
   createWithdrawPreset,
   deleteWithdrawPreset,
   findWithdrawPreset,
   getAllWithdrawPresets,
+  updateWithdrawPreset,
 } from '@/backend/business-layer/presets/withdraws';
 
 import { getTotalLBPBalance, getTotalUSDBalance } from '@/backend/business-layer/transactions/balance';
@@ -47,8 +49,10 @@ export const BUSINESS_FN = {
     create: {
       of: (isDeposit: boolean) => (isDeposit ? createDeposit : createWithdraw),
     },
+
     delete: {
       of: (isDeposit: boolean) => (isDeposit ? deleteDeposit : deleteWithdraw),
+
     },
   },
 
@@ -60,6 +64,10 @@ export const BUSINESS_FN = {
     },
     item: {
       byId: (isDeposit: boolean) => (isDeposit ? findDepositPreset : findWithdrawPreset),
+    },
+    edit:
+    {
+      of: (isDeposit: boolean) => (isDeposit ? updateDepositPreset : updateWithdrawPreset),
     },
     create: {
       of: (isDeposit: boolean) => (isDeposit ? createDepositPreset : createWithdrawPreset),

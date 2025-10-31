@@ -4,7 +4,7 @@
 
 import { getBalance } from "@/backend/data-access-layer/transactions/balance";
 
-export async function getTotalUSDBalance() {
+export async function getTotalUSDBalance(): Promise<number> {
 
 
   const balance = await getBalance({ isLBP: 0 });
@@ -17,7 +17,7 @@ export async function getTotalUSDBalance() {
 
 }
 
-export async function getTotalLBPBalance() {
+export async function getTotalLBPBalance(): Promise<number> {
 
 
   const balance = await getBalance({ isLBP: 1 });

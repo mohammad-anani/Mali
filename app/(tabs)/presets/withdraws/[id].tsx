@@ -1,10 +1,10 @@
-import TransactionDetails from '@/src/components/transactions/TransactionDetails';
+import PresetDetails from '@/src/components/presets/PresetDetails';
 import React from 'react';
 
 export default function WithdrawDetails() {
 
 
-  return <TransactionDetails isDeposit={false} />
+  return <PresetDetails />
 
 
 }

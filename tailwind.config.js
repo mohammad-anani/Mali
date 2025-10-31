@@ -20,7 +20,8 @@ muted:"#9D9D9D",
 primaryDark:"#367048",
 destroyDark:"#963E3E",
 primaryLight:"#B0F0BE",
-destroyLight:"#F0B0B0"
+destroyLight:"#F0B0B0",
+edit:"#6CA745"
       }
     },
   },

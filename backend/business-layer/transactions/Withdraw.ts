@@ -1,53 +1,60 @@
 import { z } from "zod";
-import {
-  createWithdraw as create,
-  deleteWithdraw as Delete,
-  findWithdrawByID as findByID,
-  getAllWithdraws as getAll,
-} from "../../data-access-layer/transactions/withdraws";
-import { AddTransactionSchema, TransactionSchema } from "./Transaction";
 
-// --- Schema and type ---
-export const WithdrawSchema = TransactionSchema;
-export type Withdraw = z.infer<typeof WithdrawSchema>;
+import { createTransactionData, deleteTransactionData, findTransactionByIDData, getAllTransactionsData } from "@/backend/data-access-layer/transactions/transactions";
+import { Transaction, TransactionSchema, UnknowTransaction } from "./Transaction";
 
 
+export async function createWithdraw(withdraw: Transaction): Promise<number> {
 
-export const AddWithdrawSchema = AddTransactionSchema
+  const parseResult = TransactionSchema.safeParse(withdraw);
 
-export type AddWithdraw = z.infer<typeof AddWithdrawSchema>
+  if (parseResult.success)
+    return await createTransactionData({ ...withdraw, isDeposit: false });
 
-
-// --- Service functions ---
-
-export async function createWithdraw(withdraw: AddWithdraw) {
-  const parseResult = AddWithdrawSchema.safeParse(withdraw);
-  if (parseResult.success) return await create(withdraw);
-
-  console.error(parseResult.error.format());
   return 0;
+
 }
 
-export async function deleteWithdraw(id: number) {
-  return await Delete(id);
+export async function deleteWithdraw(id: number): Promise<boolean> {
+  return await deleteTransactionData(id);
 }
 
-export async function findWithdrawByID(id: number) {
-  const withdraw = await findByID(id); // await added
-  const parseResult = WithdrawSchema.safeParse(withdraw);
+export async function findWithdrawByID(id: number): Promise<Transaction | null> {
 
-  if (parseResult.success) return withdraw as Withdraw;
+  const transaction = await findTransactionByIDData(id) as UnknowTransaction | null;
 
-  console.error(parseResult.error.format());
+  if (!transaction || !transaction.id) {
+    return null;
+  }
+
+  if (transaction.isDeposit) {
+    console.log("transaction is not a withdraw.Returning null");
+    return null;
+  }
+
+
+  const { isDeposit, ...withdraw } = transaction;
+
+  const parseResult = TransactionSchema.safeParse(withdraw);
+
+  if (parseResult.success)
+    return parseResult.data;
+
+  console.log("FindTransactionByID:Error parsing data:" + parseResult.error.format());
+
   return null;
 }
 
-export async function getAllWithdraws() {
-  const withdraws = await getAll(); // await added
-  const parseResult = z.array(WithdrawSchema).safeParse(withdraws);
+export async function getAllWithdraws(): Promise<Transaction[] | null> {
 
-  if (parseResult.success) return parseResult.data as Withdraw[];
+  const withdraws = await getAllTransactionsData({ isDeposit: false })
 
-  console.error(parseResult.error.format());
+
+  const parseResult = z.array(TransactionSchema).safeParse(withdraws);
+
+  if (parseResult.success)
+    return withdraws as Transaction[];
+
+
   return null;
 }

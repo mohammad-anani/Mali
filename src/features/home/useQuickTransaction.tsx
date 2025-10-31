@@ -1,5 +1,5 @@
-import { AddDeposit, AddDepositSchema } from "@/backend/business-layer/transactions/Deposit";
-import { AddWithdraw, AddWithdrawSchema } from "@/backend/business-layer/transactions/Withdraw";
+import { AddDeposit, AddDepositSchema } from "@/backend/business-layer/transactions/deposit";
+import { AddWithdraw, AddWithdrawSchema } from "@/backend/business-layer/transactions/withdraw";
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMode from "@/src/util/getMode";

@@ -1,9 +1,10 @@
 import { Transaction } from "@/backend/business-layer/transactions/Transaction";
 import { numberToMoney } from "@/src/util/numberToMoney";
+import themeColor from "@/src/util/themeColor";
 import React from "react";
 import { Text, View } from "react-native";
 
-export function TransactionListFooter({ section, color }: { section: { title: string; data: Transaction[]; }; color: string; }) {
+export function TransactionListFooter({ section, isDeposit = false }: { section: { title: string; data: Transaction[]; }, isDeposit?: boolean }) {
 
   const { data } = section;
 
@@ -16,9 +17,12 @@ export function TransactionListFooter({ section, color }: { section: { title: st
     0
   );
 
+
+  const color = themeColor(isDeposit);
+
   return (
     <View
-      className={`flex-row justify-between px-5 mb-8 ${color} rounded-full  items-center`}
+      className={`flex-row justify-between px-5 mb-8  rounded-full  ${color} items-center`}
     >
       <Text className="text-[26px] text-secondary">Total:</Text>
       <View>

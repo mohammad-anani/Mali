@@ -1,4 +1,5 @@
 import DepositWithdrawTabBar from '@/src/components/util/buttons/DepositWithdrawTabBar';
+import { ROUTES } from '@/src/dicts/routes';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
@@ -10,7 +11,7 @@ export default function Layout() {
     <View className=' flex-1 bg-background pt-10'>
 
       <Tabs
-        initialRouteName="deposits"
+        initialRouteName={ROUTES.actions.deposits.name}
         screenOptions={{
           tabBarPosition: "top",
           headerShown: false,

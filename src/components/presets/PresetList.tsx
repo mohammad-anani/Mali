@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import NewPresetButton from "./presetList/NewPresetButton";
-import { TransactionListItems } from "./presetList/PresetListItems";
+import { PresetListItems } from "./presetList/PresetListItems";
 
 
 
@@ -15,7 +15,7 @@ export default function PresetList({
   return (
     <View className="flex-1 gap-3">
       <NewPresetButton isDeposit={isDeposit} />
-      <TransactionListItems isDeposit={isDeposit} />
+      <PresetListItems isDeposit={isDeposit} />
     </View>
   );
 }

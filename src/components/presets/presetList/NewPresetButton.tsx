@@ -1,3 +1,4 @@
+import { ROUTES } from '@/src/dicts/routes';
 import themeColor from '@/src/util/themeColor';
 import { router } from 'expo-router';
 import React from 'react';
@@ -8,7 +9,7 @@ export default function NewPresetButton({ isDeposit }: { isDeposit: boolean }) {
   const color = themeColor(isDeposit)
   const onPressfn = (() => {
 
-    router.push(isDeposit ? "/presets/deposits/add" : "/presets/withdraws/add")
+    router.push(ROUTES.presets.of.add(isDeposit))
   })
 
   return (
