@@ -6,15 +6,9 @@ import React from 'react';
 export default function Add() {
 
   const isKeyboardUp = useKeyboard();
-
-
   return (
-
-
-
     <>
       <BackArrow size={!isKeyboardUp ? 60 : 30} color='black' />
-
       <NewPreset isDeposit={false} />
     </>
   )

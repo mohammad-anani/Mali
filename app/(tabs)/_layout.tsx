@@ -19,7 +19,6 @@ export default function Layout() {
     <Tabs
       initialRouteName="home"
       screenOptions={{
-
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarVisibilityAnimationConfig: { hide: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } }, show: { animation: "timing", config: { duration: 0, delay: 0, easing: () => 0 } } },

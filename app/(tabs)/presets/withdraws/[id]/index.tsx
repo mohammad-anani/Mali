@@ -8,13 +8,9 @@ export default function WithdrawDetails() {
   const preset = useWithdrawPresetDetails();
 
   if (!preset) {
-    return <>
+    return <Error message={`Withdraw retreiving failed. Please try again later`} />
 
-      <Error message={`Withdraw retreiving failed. Please try again later`} />
-    </>
   }
-
-
   return <PresetDetails isDeposit preset={preset} />
 
 

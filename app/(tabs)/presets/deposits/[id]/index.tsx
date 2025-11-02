@@ -8,10 +8,8 @@ export default function DepositDetails() {
   const preset = useDepositPresetDetails();
 
   if (!preset) {
-    return <>
+    return <Error message={`Deposit retreiving failed. Please try again later`} />
 
-      <Error message={`Deposit retreiving failed. Please try again later`} />
-    </>
   }
 
 

@@ -9,49 +9,37 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message';
 import "../global.css";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  },
+});
 
 export default function Layout() {
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: Infinity,          // queries never become stale
-        refetchOnMount: false,        // don't refetch on mount
-        refetchOnWindowFocus: false,  // don't refetch when window/tab gains focus
-        refetchOnReconnect: false,    // don't refetch on reconnect
-      },
-    },
-  });
-
   useEffect(
     () => {
-      NavigationBar.setButtonStyleAsync("light"); //bottom bar buttons color
+      NavigationBar.setButtonStyleAsync("light");
     }
     , [])
 
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
-
+  const paddingBottom = insets.bottom && keyboardHeight ? keyboardHeight : 0
 
   return (
-    <>
-
-      <QueryClientProvider client={queryClient}>
-
-        <StatusBar barStyle="light-content" translucent={true} />
-
-
-        <SafeAreaView className='flex-1 bg-background' style={{ paddingBottom: insets.bottom && keyboardHeight ? keyboardHeight : 0 }}>
-
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#3E3E3E" } }} />
-        </SafeAreaView>
-
-
-
-        <Toast config={toastConfig} />
-
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <StatusBar barStyle="light-content" translucent={true} />
+      <SafeAreaView className='flex-1 bg-background' style={{ paddingBottom: paddingBottom }}>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#3E3E3E" } }} />
+      </SafeAreaView>
+      <Toast config={toastConfig} />
+    </QueryClientProvider>
   )
 }
 

@@ -16,7 +16,6 @@ export default function Setup() {
 
   return (
     <View className='flex flex-col items-center  h-full pb-10 pt-2 px-5'>
-
       <View className=' self-start w-[58px] h-[58px]' >
         {
           pageIndex ?

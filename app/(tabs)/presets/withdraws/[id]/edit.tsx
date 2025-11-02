@@ -6,17 +6,11 @@ import { useWithdrawPresetDetails } from './_layout';
 
 export default function Edit() {
 
-
-
   const preset = useWithdrawPresetDetails();
 
   if (!preset) {
-    return <>
-
-      <Error message={`Withdraw Preset retreiving failed. Please try again later`} />
-    </>
+    return <Error message={`Withdraw Preset retreiving failed. Please try again later`} />
   }
-
 
   return <AddUpdatePreset isDeposit={false} preset={preset} />
 }
