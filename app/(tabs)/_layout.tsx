@@ -15,7 +15,6 @@ export default function Layout() {
     })();
   }, []);
   const insets = useSafeAreaInsets();
-  console.log(insets);
   return (
     <Tabs
       initialRouteName="home"

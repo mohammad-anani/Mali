@@ -8,7 +8,7 @@ export async function createDepositPreset(preset: AddPreset): Promise<number> {
     console.error('createDeposit preset validation failed', parsed.error.format());
     return 0;
   }
-  return await createPreset({ ...preset, isDeposit: false });
+  return await createPreset({ ...preset, isDeposit: true });
 }
 
 export async function findDepositPreset(id: number): Promise<Preset | null> {
@@ -34,5 +34,5 @@ export async function deleteDepositPreset(id: number): Promise<boolean> {
 }
 
 export async function getAllDepositPresets(): Promise<Preset[] | null> {
-  return await getAllPresets({ isDeposit: false });
+  return await getAllPresets({ isDeposit: true });
 }

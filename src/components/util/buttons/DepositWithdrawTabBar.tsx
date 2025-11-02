@@ -1,10 +1,11 @@
 import { destroy, destroyDark, primary, primaryDark } from '@/src/css';
 import { ROUTES } from '@/src/dicts/routes';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { ExternalPathString, router } from 'expo-router';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function DepositWithdrawTabBar({ state: { index }, navigation: { navigate } }: BottomTabBarProps) {
+export default function DepositWithdrawTabBar({ state: { index }, navigation: { navigate }, mode }: BottomTabBarProps & { mode: "Preset" | "Action" }) {
   const isDeposit = !index;
 
   return (<View className="pt-20 flex-row justify-stretch">
@@ -12,7 +13,7 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
     <Pressable
       className="flex flex-row justify-between w-[50%] absolute top-0 left-0"
       style={{ zIndex: isDeposit ? 10 : 0 }}
-      onPress={() => navigate(ROUTES.actions.of.name(true))}
+      onPress={() => router.push((mode === "Action" ? ROUTES.actions : ROUTES.presets).of.path(true) as ExternalPathString)}
     >
       <View
         className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-primary' : 'bg-primaryDark'
@@ -32,7 +33,7 @@ export default function DepositWithdrawTabBar({ state: { index }, navigation: { 
     <Pressable
       className="flex flex-row justify-end w-[50%] absolute top-0 right-0"
       style={{ zIndex: isDeposit ? 0 : 10 }}
-      onPress={() => navigate(ROUTES.actions.of.name(false))}
+      onPress={() => router.push((mode === "Action" ? ROUTES.actions : ROUTES.presets).of.path(false) as ExternalPathString)}
     >
       <View
         style={[

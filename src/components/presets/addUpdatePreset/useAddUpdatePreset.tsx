@@ -53,17 +53,22 @@ export default function useAddUpdatePreset(isDeposit: boolean, preset?: Preset |
       throw new Error("Validation failed");
     }
 
-    const id = await preset ? (BUSINESS_FN.presets.edit.of(isDeposit))({ ...object, id: preset?.id } as Preset) : BUSINESS_FN.presets.create.of(isDeposit)(object as AddPreset);
-
-
-    if (!!!id) {
-      throw new Error(`${mode} Preset Saving failed`);
+    if (preset) {
+      // update flow returns boolean for success
+      const success = await BUSINESS_FN.presets.edit.of(isDeposit)({ ...object, id: preset.id } as Preset);
+      if (!success) {
+        throw new Error(`${mode} Preset updating failed`);
+      }
+      // return the existing id so onSuccess can invalidate the item
+      return { id: preset.id, isLBP: object.isLBP };
+    } else {
+      // create flow returns new id (number)
+      const newId = await BUSINESS_FN.presets.create.of(isDeposit)(object as AddPreset);
+      if (!newId) {
+        throw new Error(`${mode} Preset saving failed`);
+      }
+      return { id: newId, isLBP: object.isLBP };
     }
-
-
-    router.back();
-    // Return useful info to onSuccess()
-    return { id, isLBP: object.isLBP };
   }
   const queryClient = useQueryClient();
 
@@ -81,16 +86,16 @@ export default function useAddUpdatePreset(isDeposit: boolean, preset?: Preset |
         text2: `${mode} Preset ${preset ? "updated" : "added"} successfully`,
       });
 
+      const itemId = preset ? preset.id : result.id;
 
-      Promise.all([
+      // invalidate list and the specific item (use Promise.all to run in parallel)
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.list.of(isDeposit) }),
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).item(itemId) }),
+      ]);
 
-        await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list }),
-
-        await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).item(preset?.id ?? 0) })
-
-
-      ])
-
+      // navigate back after successful mutation and cache updates
+      router.back();
     },
     onError: (err: any) => {
       Toast.show({

@@ -20,7 +20,7 @@ export default function Layout() {
           animation: 'none',
 
         }}
-        tabBar={(props) => <DepositWithdrawTabBar {...props} />}
+        tabBar={(props) => <DepositWithdrawTabBar {...props} mode='Preset' />}
       />
     </View>
   );

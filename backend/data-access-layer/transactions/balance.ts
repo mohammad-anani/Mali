@@ -8,7 +8,7 @@ export async function getBalance(filter: any = {}) {
       return 0;
     }
 
-    const { fromDate, toDate } = filter;
+    const { fromDate, toDate, isLBP } = filter;
     const whereClauses: string[] = [];
     const params: any[] = [];
 
@@ -21,6 +21,10 @@ export async function getBalance(filter: any = {}) {
       whereClauses.push("date <= ?");
       params.push(toDate);
     }
+
+    // always include currency condition (default to LBP if not passed)
+    whereClauses.push("isLBP = ?");
+    params.push(isLBP ?? 1); // 1 = LBP, 0 = USD or other
 
     // Build WHERE clause
     const whereSQL = whereClauses.length ? ` AND ${whereClauses.join(" AND ")}` : "";

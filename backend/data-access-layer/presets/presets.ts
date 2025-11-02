@@ -92,7 +92,7 @@ export async function getAllPresets(filter: any = {}) {
 
     const whereSQL = whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
-    const presets = await runDb((db) => db.getAllAsync(`SELECT * FROM Presets ${whereSQL};`, params));
+    const presets = await runDb((db) => db.getAllAsync(`SELECT * FROM Presets ${whereSQL} Order By id DESC;`, params));
 
     return (presets as any) ?? [];
   } catch (err) {

@@ -1,5 +1,5 @@
 import { CheckDatabaseExists } from '@/backend/business-layer/general';
-import { init } from '@/backend/business-layer/setup';
+import { initDatabase } from '@/backend/business-layer/setup';
 import steps from '@/src/features/setup/Steps';
 import { DEFAULT_RATE } from '@/src/util/constants';
 import { minimum_1k_MoneyFormatter } from '@/src/util/minimum_1k_MoneyFormatter';
@@ -58,7 +58,7 @@ export default function useSetup() {
 
 
 
-    if (await init(finalRate, finalLBPAmount, finalUSDAmount)) {
+    if (await initDatabase(finalRate, finalLBPAmount, finalUSDAmount)) {
 
       // return Redirect({ href: '/' })
       router.replace('/home');

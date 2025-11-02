@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 import { createTransactionData, deleteTransactionData, findTransactionByIDData, getAllTransactionsData } from "@/backend/data-access-layer/transactions/transactions";
-import { Transaction, TransactionSchema, UnknowTransaction } from "./Transaction";
+import { AddTransaction, AddTransactionSchema, Transaction, TransactionSchema, UnknowTransaction } from "./Transaction";
 
 
-export async function createWithdraw(withdraw: Transaction): Promise<number> {
+export async function createWithdraw(withdraw: AddTransaction): Promise<number> {
 
-  const parseResult = TransactionSchema.safeParse(withdraw);
+  const parseResult = AddTransactionSchema.safeParse(withdraw);
 
   if (parseResult.success)
     return await createTransactionData({ ...withdraw, isDeposit: false });
@@ -28,7 +28,7 @@ export async function findWithdrawByID(id: number): Promise<Transaction | null> 
   }
 
   if (transaction.isDeposit) {
-    console.log("transaction is not a withdraw.Returning null");
+    console.warn(`findWithdrawByID: transaction ${id} is a deposit — returning null`);
     return null;
   }
 
@@ -40,7 +40,7 @@ export async function findWithdrawByID(id: number): Promise<Transaction | null> 
   if (parseResult.success)
     return parseResult.data;
 
-  console.log("FindTransactionByID:Error parsing data:" + parseResult.error.format());
+  console.error(`findWithdrawByID: error parsing transaction ${id}:`, parseResult.error.format());
 
   return null;
 }
@@ -55,6 +55,6 @@ export async function getAllWithdraws(): Promise<Transaction[] | null> {
   if (parseResult.success)
     return withdraws as Transaction[];
 
-
+  console.error('getAllWithdraws: error parsing withdraws list', parseResult.error?.format ? parseResult.error.format() : parseResult.error);
   return null;
 }

@@ -20,6 +20,7 @@ export const QUERY_KEYS = {
     of: (isDeposit: boolean) => ({
       list: isDeposit ? ["getDeposits"] as const : ["getWithdraws"] as const,
       item: (id: string | number) => (isDeposit ? ["getDeposit", id] as const : ["getWithdraw", id] as const),
+      itemNoID: () => (isDeposit ? ["getDeposit"] as const : ["getWithdraw"] as const),
     }),
   },
 
@@ -30,12 +31,13 @@ export const QUERY_KEYS = {
       of: (isDeposit: boolean) => (isDeposit ? ["getDepositPresets"] as const : ["getWithdrawPresets"] as const),
     },
     item: {
-      byId: (isDeposit: boolean, id: string | number) => (isDeposit ? ["getDeposit", id] as const : ["getWithdraw", id] as const),
+      // distinct keys for preset items (don't collide with transaction item keys)
+      byId: (isDeposit: boolean, id: string | number) => (isDeposit ? ["getDepositPreset", id] as const : ["getWithdrawPreset", id] as const),
     },
     // convenience callback returning both list and item helpers for a given mode
     of: (isDeposit: boolean) => ({
       list: isDeposit ? ["getDepositPresets"] as const : ["getWithdrawPresets"] as const,
-      item: (id: string | number) => (isDeposit ? ["getDeposit", id] as const : ["getWithdraw", id] as const),
+      item: (id: string | number) => (isDeposit ? ["getDepositPreset", id] as const : ["getWithdrawPreset", id] as const),
     }),
   },
 };

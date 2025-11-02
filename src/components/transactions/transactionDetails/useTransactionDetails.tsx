@@ -21,6 +21,8 @@ export default function useTransactionDetails(isDeposit: boolean) {
   });
 
 
+
+
   const { lbpBalance, usdBalance } = useBalance();
 
   const [isOpen, setIsOpen] = useState(false);

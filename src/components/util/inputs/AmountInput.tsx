@@ -34,7 +34,7 @@ export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSub
           placeholder='25,000'
           keyboardType='numeric'
           value={amount !== null ? String(amount) : ''}
-          onChangeText={text => setAmount(text.length ? +text : null)}
+          onChangeText={text => setAmount(text.length && !Number.isNaN(+text) ? +text : null)}
 
         />
         <CurrencyToggle isToggled={!isLBP} setIsToggled={(isToggled) => { setIsLBP(!isToggled) }} isDeposit={isDeposit} />

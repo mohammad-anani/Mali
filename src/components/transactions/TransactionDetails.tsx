@@ -1,5 +1,7 @@
+import ROUTES from '@/src/dicts/routes';
 import formatDate from '@/src/util/formatDate';
 import { numberToMoney } from '@/src/util/numberToMoney';
+import { ExternalPathString, router } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import BackArrow from '../util/buttons/BackArrow';
@@ -30,7 +32,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
   }
 
 
-  const { isLBP, amount, title, date } = data
+  const { isLBP, amount, title, date, presetID } = data
 
 
   return (
@@ -63,8 +65,11 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
               </View>
             </View>
           </View>
+          <View className='gap-2'>
 
-          <Button pressableProps={{ className: "w-full justify-center items-center bg-destroy rounded-3xl h-20", onPress: () => { setIsOpen(true) } }} textProps={{ className: "text-4xl text-secondary" }}>Delete</Button>
+            {presetID ? <Button pressableProps={{ className: "w-full justify-center items-center bg-edit rounded-3xl h-20", onPress: () => { router.push(ROUTES.presets.of.item(isDeposit, presetID) as ExternalPathString) } }} textProps={{ className: "text-4xl text-secondary" }}>View Preset</Button> : null}
+            <Button pressableProps={{ className: "w-full justify-center items-center bg-destroy rounded-3xl h-20", onPress: () => { setIsOpen(true) } }} textProps={{ className: "text-4xl text-secondary" }}>Delete</Button>
+          </View>
         </View>
 
       </ScrollView>

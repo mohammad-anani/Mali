@@ -23,7 +23,16 @@ export default function usePresetDetails(isDeposit: boolean, id: number) {
       Toast.show({
         type: "success", text1: "Success", text2: "Preset deleted successfully!"
       })
-      await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list })
+      Promise.all(
+        [
+
+          await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.presets.of(isDeposit).list })
+          , await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
+          , await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).itemNoID() })
+
+        ]
+      )
+
 
       router.back();
     }

@@ -210,7 +210,7 @@ export async function createDatabaseTables(): Promise<boolean> {
         isDeposit INTEGER NOT NULL,
         date DATETIME DEFAULT CURRENT_TIMESTAMP,
         presetID INTEGER,
-        FOREIGN KEY (presetID) REFERENCES Presets(id)
+        FOREIGN KEY (presetID) REFERENCES Presets(id) ON DELETE SET NULL
       );
     `);
 

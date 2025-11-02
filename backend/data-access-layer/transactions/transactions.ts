@@ -11,7 +11,7 @@ export async function createTransactionData(transaction: any) {
       db.runAsync(
         `INSERT INTO Transactions (title, amount, isLBP, isDeposit, presetID,date)
          VALUES (?, ?, ?, ?, ?,?);`,
-        [title, amount, isLBP, isDeposit, presetID, new Date().toISOString(),]
+        [title, amount, isLBP, isDeposit, presetID, new Date().toISOString()]
       )
     );
 

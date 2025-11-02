@@ -32,8 +32,8 @@ export default function AddUpdatePreset({ isDeposit, preset = null }: { isDeposi
 
           <View className='gap-5'>
 
-            <TitleInput inputExtraProps={{ autoFocus: true, ref: titleRef, returnKeyType: 'next', onSubmitEditing: () => amountRef.current?.focus() }} title={object.title} setTitle={(t) => { setObject(o => ({ ...o, title: t })) }} isDeposit={isDeposit} hasSubmitted={hasSubmitted} />
-            <AmountInput inputExtraProps={{ ref: amountRef }} balances={[-1, -1]} isLBP={object.isLBP} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} amount={object.amount} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} hasSubmitted={hasSubmitted} isDeposit={isDeposit} />
+            <TitleInput inputExtraProps={{ autoFocus: true, returnKeyType: 'next', onSubmitEditing: () => amountRef.current?.focus() }} inputRef={titleRef} title={object.title} setTitle={(t) => { setObject(o => ({ ...o, title: t })) }} isDeposit={isDeposit} hasSubmitted={hasSubmitted} />
+            <AmountInput inputExtraProps={{}} inputRef={amountRef} balances={[-1, -1]} isLBP={object.isLBP} setIsLBP={(c) => { setObject(o => ({ ...o, isLBP: c })) }} amount={object.amount} setAmount={(a) => { setObject(o => ({ ...o, amount: a })) }} hasSubmitted={hasSubmitted} isDeposit={isDeposit} />
           </View>
         </View>
         <Button

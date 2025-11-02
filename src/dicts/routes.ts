@@ -20,6 +20,7 @@ export const ROUTES = {
     of: {
       add: (isDeposit: boolean) => (isDeposit ? '/actions/deposits/add' : '/actions/withdraws/add'),
       item: (isDeposit: boolean, id?: number) => (isDeposit ? (id ? `/actions/deposits/${id}` : '/actions/deposits') : (id ? `/actions/withdraws/${id}` : '/actions/withdraws')),
+      path: (isDeposit: boolean) => (isDeposit ? '/actions/deposits' : '/actions/withdraws'),
     },
   },
 
@@ -41,7 +42,8 @@ export const ROUTES = {
     of: {
       add: (isDeposit: boolean) => (isDeposit ? '/presets/deposits/add' : '/presets/withdraws/add'),
       item: (isDeposit: boolean, id?: number) => (isDeposit ? (id ? `/presets/deposits/${id}` : '/presets/deposits') : (id ? `/presets/withdraws/${id}` : '/presets/withdraws')),
-      edit: (isDeposit: boolean, id?: number) => (isDeposit ? (id ? `/presets/deposits/${id}/edit` : '/presets/deposits') : (id ? `/presets/withdraws/${id}/editt` : '/presets/withdraws'))
+      edit: (isDeposit: boolean, id?: number) => (isDeposit ? (id ? `/presets/deposits/${id}/edit` : '/presets/deposits') : (id ? `/presets/withdraws/${id}/edit` : '/presets/withdraws')),
+      path: (isDeposit: boolean) => (isDeposit ? '/presets/deposits' : '/presets/withdraws'),
     },
   },
 } as const;

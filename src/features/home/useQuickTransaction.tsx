@@ -1,5 +1,5 @@
-import { AddDeposit, AddDepositSchema } from "@/backend/business-layer/transactions/deposit";
-import { AddWithdraw, AddWithdrawSchema } from "@/backend/business-layer/transactions/withdraw";
+
+import { AddTransaction, AddTransactionSchema } from '@/backend/business-layer/transactions/Transaction';
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMode from "@/src/util/getMode";
@@ -14,7 +14,7 @@ export type QuickTransactionForm = {
 };
 
 export default function useQuickTransaction(
-  isDeposit: boolean
+  isDeposit: boolean, balances: [number | null, number | null]
 
 ) {
 
@@ -49,18 +49,32 @@ export default function useQuickTransaction(
   async function submitFn() {
     setHasSubmitted(true);
 
-    const data = { ...object, presetID: null } as AddDeposit | AddWithdraw;
-    const schema = isDeposit ? AddDepositSchema : AddWithdrawSchema;
+    const data = { ...object, presetID: null } as AddTransaction;
+    const schema = AddTransactionSchema
+
+
+    const balance = balances?.[object.isLBP ? 0 : 1];
+
+
+    const withdrawExceedsBalance = balance !== -1 && object.amount && !isDeposit && balance && object.amount > balance;
+
+    if (withdrawExceedsBalance) {
+      setIsSubmitError(true);
+      console.log("Hello");
+      throw new Error("Validation failed");
+
+    }
+
 
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
+
       console.log(parsed.error.format());
       setIsSubmitError(true);
       throw new Error("Validation failed");
     }
-
     const action = BUSINESS_FN.transactions.create.of(isDeposit);
-    const id = await action(data as any);
+    const id = await action(data);
 
     if (!id) {
       throw new Error(`${mode} failed`);
