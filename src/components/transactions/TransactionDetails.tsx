@@ -8,6 +8,7 @@ import BackArrow from '../util/buttons/BackArrow';
 import Button from '../util/buttons/Button';
 import Error from '../util/state/Error';
 import Loading from '../util/state/Loading';
+import Label from '../util/ui/Label';
 import Title from '../util/ui/Title';
 import DeleteModal from './transactionDetails/DeleteModal';
 import useTransactionDetails from './transactionDetails/useTransactionDetails';
@@ -44,23 +45,23 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
         className="flex-1">
         <View className='gap-3 justify-between  flex-1 '>
           <View className='gap-3 flex-1'>
-
+            y
             <Title >{isDeposit ? "Deposit" : "Withdraw"} Details:</Title>
 
             <View className='gap-3'>
               <View>
 
-                <Text className='underline text-2xl'>Title:</Text>
+                <Label>Title:</Label>
                 <Text className='text-xl'>{title}</Text>
               </View>
               <View>
 
-                <Text className='underline text-2xl'>Amount:</Text>
+                <Label>Amount:</Label>
                 <Text className='text-xl'>{numberToMoney(amount)} {isLBP ? "LBP" : "USD"}</Text>
               </View>
               <View>
 
-                <Text className='underline text-2xl'>Date:</Text>
+                <Label>Date:</Label>
                 <Text className='text-xl'>{formatDate(date)}</Text>
               </View>
             </View>

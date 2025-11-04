@@ -6,7 +6,9 @@ import Loading from '../state/Loading';
 import CurrencyToggle from './CurrencyToggle';
 import Input from './Input';
 
-export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP, inputExtraProps, inputRef }: { amount: number | null, isLBP: boolean, balances: [number | null, number | null], isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void, inputExtraProps?: TextInputProps, inputRef?: React.Ref<TextInput> }) {
+export type Balance = [number | null, number | null]
+
+export default function AmountInput({ amount, isLBP, balances, isDeposit, hasSubmitted, setAmount, setIsLBP, inputExtraProps, inputRef }: { amount: number | null, isLBP: boolean, balances: Balance, isDeposit: boolean, hasSubmitted: boolean, setIsLBP: (c: boolean) => void, setAmount: (a: number | null) => void, inputExtraProps?: TextInputProps, inputRef?: React.Ref<TextInput> }) {
 
 
   const amountError = !!(isLBP && amount && amount % MIN_AMOUNT !== 0);

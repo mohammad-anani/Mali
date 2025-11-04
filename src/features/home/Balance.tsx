@@ -23,9 +23,6 @@ export default function Balance({ usdBalance, lbpBalance, isLoading = false, isE
                 <Text className='text-[30px] '>{numberToMoney(lbpBalance)} LBP</Text>
                 <Text className='text-[30px]  '>{numberToMoney(usdBalance)} USD</Text>
               </>
-
-
-
           }
         </View>
       </ContentView>

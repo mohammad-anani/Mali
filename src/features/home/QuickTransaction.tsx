@@ -1,6 +1,6 @@
 import Button from '@/src/components/util/buttons/Button';
 import ContentView from '@/src/components/util/containers/ContentView';
-import AmountInput from '@/src/components/util/inputs/AmountInput';
+import AmountInput, { Balance } from '@/src/components/util/inputs/AmountInput';
 import TitleInput from '@/src/components/util/inputs/TitleInput';
 import Loading from '@/src/components/util/state/Loading';
 import Title from '@/src/components/util/ui/Title';
@@ -12,7 +12,7 @@ import { TextInput, View } from 'react-native';
 
 
 
-export default function QuickTransaction({ isDeposit = false, balances }: { isDeposit?: boolean, balances: [number | null, number | null] }) {
+export default function QuickTransaction({ isDeposit = false, balances }: { isDeposit?: boolean, balances: Balance }) {
 
 
 

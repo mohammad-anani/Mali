@@ -6,6 +6,7 @@ import { ExternalPathString, router } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Button from '../util/buttons/Button';
+import Label from '../util/ui/Label';
 import Title from '../util/ui/Title';
 import DeleteModal from './presetDetails/DeleteModal';
 import usePresetDetails from './presetDetails/usePresetDetails';
@@ -35,12 +36,12 @@ export default function PresetDetails({ isDeposit = false, preset }: { isDeposit
             <View className='gap-3'>
               <View>
 
-                <Text className='underline text-2xl'>Title:</Text>
+                <Label>Title:</Label>
                 <Text className='text-xl'>{title}</Text>
               </View>
               <View>
 
-                <Text className='underline text-2xl'>Amount:</Text>
+                <Label>Amount:</Label>
                 <Text className='text-xl'>{numberToMoney(amount)} {isLBP ? "LBP" : "USD"}</Text>
               </View>
 

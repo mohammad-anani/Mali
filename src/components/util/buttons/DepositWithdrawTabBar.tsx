@@ -1,81 +1,17 @@
-import { destroy, destroyDark, primary, primaryDark } from '@/src/css';
-import { ROUTES } from '@/src/dicts/routes';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { ExternalPathString, router } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import DepositSide from './depositWithdrawTabs/DepositSide';
+import WithdrawSide from './depositWithdrawTabs/WithdrawSide';
 
 export default function DepositWithdrawTabBar({ state: { index }, navigation: { navigate }, mode }: BottomTabBarProps & { mode: "Preset" | "Action" }) {
   const isDeposit = !index;
 
   return (<View className="pt-20 flex-row justify-stretch">
-    {/* Deposit */}
-    <Pressable
-      className="flex flex-row justify-between w-[50%] absolute top-0 left-0"
-      style={{ zIndex: isDeposit ? 10 : 0 }}
-      onPress={() => router.push((mode === "Action" ? ROUTES.actions : ROUTES.presets).of.path(true) as ExternalPathString)}
-    >
-      <View
-        className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-primary' : 'bg-primaryDark'
-          }`}
-      >
-        <Text className="text-secondary ml-5 text-3xl">Deposits</Text>
-      </View>
-      <View
-        style={[
-          triangleLeft.triangle,
-          { borderTopColor: isDeposit ? primary : primaryDark }, // uses primaryDark when inactive
-        ]}
-      />
-    </Pressable>
-
-    {/* Withdraw */}
-    <Pressable
-      className="flex flex-row justify-end w-[50%] absolute top-0 right-0"
-      style={{ zIndex: isDeposit ? 0 : 10 }}
-      onPress={() => router.push((mode === "Action" ? ROUTES.actions : ROUTES.presets).of.path(false) as ExternalPathString)}
-    >
-      <View
-        style={[
-          triangleRight.triangle,
-          { borderTopColor: isDeposit ? destroyDark : destroy }, // uses destroyDark when inactive
-        ]}
-      />
-      <View
-        className={`h-20 w-[80%] justify-center ${isDeposit ? 'bg-destroyDark ' : 'bg-destroy'
-          }`}
-      >
-        <Text className="text-secondary text-right mr-5 text-3xl">
-          Withdraws
-        </Text>
-      </View>
-    </Pressable>
+    <DepositSide isDeposit={isDeposit} mode={mode} />
+    <WithdrawSide isDeposit={isDeposit} mode={mode} />
   </View>
   );
 }
 
-const triangleLeft = StyleSheet.create({
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderRightWidth: 70,
-    borderTopWidth: 70,
-    borderRightColor: 'transparent',
-    transform: [{ rotate: '270deg' }],
-  },
-});
 
-const triangleRight = StyleSheet.create({
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderRightWidth: 70,
-    borderTopWidth: 70,
-    borderRightColor: 'transparent',
-    transform: [{ rotate: '180deg' }],
-  },
-});

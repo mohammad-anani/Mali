@@ -1,5 +1,6 @@
 
 import { AddTransaction, AddTransactionSchema } from '@/backend/business-layer/transactions/Transaction';
+import { Balance } from '@/src/components/util/inputs/AmountInput';
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMode from "@/src/util/getMode";
@@ -14,7 +15,7 @@ export type QuickTransactionForm = {
 };
 
 export default function useQuickTransaction(
-  isDeposit: boolean, balances: [number | null, number | null]
+  isDeposit: boolean, balances: Balance
 
 ) {
 

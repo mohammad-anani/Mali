@@ -3,11 +3,11 @@ import { AddTransaction, AddTransactionSchema } from '@/backend/business-layer/t
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMode from '@/src/util/getMode';
-import { numberToMoney } from '@/src/util/numberToMoney';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
+import { Balance } from '../../util/inputs/AmountInput';
 
 
 export type TransactionForm = {
@@ -18,39 +18,10 @@ export type TransactionForm = {
 };
 
 
-export default function useNewTransaction(isDeposit: boolean, balances: [number | null, number | null]) {
+export default function useNewTransaction(isDeposit: boolean, balances: Balance) {
 
   const [object, setObject] = useState<TransactionForm>({ title: "", amount: null, isLBP: true, presetID: null });
-  const { data: presets } = useQuery({ queryKey: QUERY_KEYS.presets.of(isDeposit).list, queryFn: BUSINESS_FN.presets.list.of(isDeposit) });
 
-
-  let presetsList = presets ? presets.map(p => ({ label: (p.title + " " + numberToMoney(p.amount) + " ") + (p.isLBP ? "LBP" : "USD"), value: p.id })) : [];
-
-  presetsList = [{ label: "None", value: 0 }, ...presetsList]
-  console.log(presetsList);
-
-  useEffect(() => {
-
-    if (!object.presetID) {
-      setObject((o) => ({ ...o, isLBP: true, title: "", amount: null }))
-
-    }
-    else {
-
-
-      const preset = presets?.find(p => p.id === object.presetID);
-
-      if (!preset) {
-        setObject((o) => ({ ...o, isLBP: true, title: "", amount: null }))
-      }
-      else {
-
-
-        setObject((o) => ({ ...o, isLBP: preset?.isLBP, title: preset?.title, amount: preset?.amount }))
-      }
-    }
-
-  }, [object.presetID])
 
   //submit click
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -132,10 +103,10 @@ export default function useNewTransaction(isDeposit: boolean, balances: [number 
       });
 
 
-      Promise.all(
+      await Promise.all(
         [
-          await queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
-          await queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) })
+          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
+          queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) })
 
 
         ]
@@ -155,6 +126,6 @@ export default function useNewTransaction(isDeposit: boolean, balances: [number 
 
   const submit = () => mutation.mutate();
 
-  return { isLoading: mutation.isPending, isSubmitError, object, setObject, hasSubmitted, submit, presetsList };
+  return { isLoading: mutation.isPending, isSubmitError, object, setObject, hasSubmitted, submit };
 
 }
