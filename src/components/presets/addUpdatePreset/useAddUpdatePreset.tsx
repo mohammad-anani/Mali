@@ -47,9 +47,8 @@ export default function useAddUpdatePreset(isDeposit: boolean, preset?: Preset |
 
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
-      console.log(parsed.error.format());
       setIsSubmitError(true);
-
+      Toast.show({ type: 'error', text1: 'Validation failed', text2: 'Please check the preset fields.' });
       throw new Error("Validation failed");
     }
 

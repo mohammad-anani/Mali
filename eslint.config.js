@@ -6,5 +6,9 @@ module.exports = defineConfig([
   expoConfig,
   {
     ignores: ['dist/*'],
+    rules: {
+      // Disallow console.log/console.debug in code; allow warnings and errors
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
   },
 ]);

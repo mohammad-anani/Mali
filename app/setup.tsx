@@ -19,7 +19,7 @@ export default function Setup() {
       <View className=' self-start w-[58px] h-[58px]' >
         {
           pageIndex ?
-            <BackArrow size={58} color={secondary2} onPress={() => decrementPageIndex} />
+            <BackArrow size={58} color={secondary2} onPress={decrementPageIndex} />
             : null}
       </View>
       <LogoDisplay />
@@ -27,7 +27,7 @@ export default function Setup() {
         {Steps[pageIndex]}
       </View>
 
-      <Button pressableProps={{ className: " bg-primary w-[280px] h-[100px] rounded-[50px] justify-center ", onPress: () => incrementPageIndex, disabled: object.isError }} textProps={{ className: "text-secondary text-[59px] text-center" }}>
+      <Button pressableProps={{ className: " bg-primary w-[280px] h-[100px] rounded-[50px] justify-center ", onPress: incrementPageIndex, disabled: object.isError }} textProps={{ className: "text-secondary text-[59px] text-center" }}>
         {!pageIndex ? "Start" : pageIndex === pageCount - 1 ? "Finish" : "Next"}
       </Button>
     </View>

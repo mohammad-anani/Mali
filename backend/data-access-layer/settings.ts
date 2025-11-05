@@ -1,16 +1,14 @@
 
 import { openDatabase } from "./general";
-export async function getSettingData(name: string) {
+
+export async function getSettingData(name: string): Promise<string | null> {
   try {
     const db = await openDatabase();
     if (!db) {
       console.error("getSetting: database is null");
       return null;
     }
-    const res = await db.getFirstAsync(
-      `SELECT value FROM Settings WHERE name = ?`,
-      [name]
-    ) as { value: string };
+    const res = (await db.getFirstAsync(`SELECT value FROM Settings WHERE name = ?`, [name])) as { value: string } | null;
     return res ? res.value : null;
   } catch (err) {
     console.error("getSetting error:", err);
@@ -18,15 +16,14 @@ export async function getSettingData(name: string) {
   }
 }
 
-
-export async function getSettingsData() {
+export async function getSettingsData(): Promise<[string, string][]> {
   try {
     const db = await openDatabase();
     if (!db) {
       console.error("getSettings: database is null");
       return [];
     }
-    const res = await db.getAllAsync(`SELECT name, value FROM Settings`) as { name: string, value: string }[];
+    const res = (await db.getAllAsync(`SELECT name, value FROM Settings`)) as { name: string; value: string }[];
     return res.map((setting) => [setting.name, setting.value]);
   } catch (err) {
     console.error("getSettings error:", err);
@@ -34,7 +31,7 @@ export async function getSettingsData() {
   }
 }
 
-export async function setSettings(settings: [string, string][]) {
+export async function setSettings(settings: [string, string][]): Promise<boolean> {
   try {
     const db = await openDatabase();
     if (!db) {

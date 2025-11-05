@@ -1,16 +1,15 @@
 import { openDatabase } from "../general";
 
-export async function getBalance(filter: any = {}) {
+export async function getBalance(filter: Partial<{ fromDate: string; toDate: string; isLBP: boolean }> = {}): Promise<number> {
   try {
     const db = await openDatabase();
     if (!db) {
       console.error("getBalance: database is null");
       return 0;
     }
-
     const { fromDate, toDate, isLBP } = filter;
     const whereClauses: string[] = [];
-    const params: any[] = [];
+    const params: (string | number)[] = [];
 
     if (fromDate) {
       whereClauses.push("date >= ?");
@@ -24,14 +23,14 @@ export async function getBalance(filter: any = {}) {
 
     // always include currency condition (default to LBP if not passed)
     whereClauses.push("isLBP = ?");
-    params.push(isLBP ?? 1); // 1 = LBP, 0 = USD or other
+    params.push((isLBP ?? true) ? 1 : 0); // convert boolean to DB flag
 
     // Build WHERE clause
     const whereSQL = whereClauses.length ? ` AND ${whereClauses.join(" AND ")}` : "";
 
     // Prepare queries
-    const depositsQuery = `SELECT SUM(amount) AS totalDeposits FROM transactions WHERE isDeposit = 1${whereSQL}`;
-    const withdrawalsQuery = `SELECT SUM(amount) AS totalWithdrawals FROM transactions WHERE isDeposit = 0${whereSQL}`;
+    const depositsQuery = `SELECT SUM(amount) AS totalDeposits FROM Transactions WHERE isDeposit = 1${whereSQL}`;
+    const withdrawalsQuery = `SELECT SUM(amount) AS totalWithdrawals FROM Transactions WHERE isDeposit = 0${whereSQL}`;
 
     // Execute queries sequentially to avoid concurrent prepare/execute on the same DB handle
     const depositResult = (await db.getFirstAsync(depositsQuery, params)) as { totalDeposits: number | null };

@@ -1,5 +1,5 @@
-import BUSINESS_FN from '@/src/dicts/businessFn';
-import QUERY_KEYS from '@/src/dicts/queryKeys';
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import { numberToMoney } from '@/src/util/numberToMoney';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -13,7 +13,6 @@ export default function useDropDownInput(object: TransactionForm, isDeposit: boo
   let presetsList = presets ? presets.map(p => ({ label: (p.title + " " + numberToMoney(p.amount) + " ") + (p.isLBP ? "LBP" : "USD"), value: p.id })) : [];
 
   presetsList = [{ label: "None", value: 0 }, ...presetsList]
-  console.log(presetsList);
 
   useEffect(() => {
 
@@ -36,7 +35,7 @@ export default function useDropDownInput(object: TransactionForm, isDeposit: boo
       }
     }
 
-  }, [object.presetID])
+  }, [object.presetID, presets, setObject])
 
 
   return presetsList

@@ -50,4 +50,3 @@ export const ROUTES = {
 
 export type Routes = typeof ROUTES;
 
-export default ROUTES;

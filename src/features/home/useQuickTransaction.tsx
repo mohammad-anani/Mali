@@ -62,7 +62,6 @@ export default function useQuickTransaction(
 
     if (withdrawExceedsBalance) {
       setIsSubmitError(true);
-      console.log("Hello");
       throw new Error("Validation failed");
 
     }
@@ -70,9 +69,9 @@ export default function useQuickTransaction(
 
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
-
-      console.log(parsed.error.format());
       setIsSubmitError(true);
+      // Provide user-friendly validation error via Toast
+      Toast.show({ type: 'error', text1: 'Validation failed', text2: 'Please check the entered values.' });
       throw new Error("Validation failed");
     }
     const action = BUSINESS_FN.transactions.create.of(isDeposit);
@@ -104,20 +103,14 @@ export default function useQuickTransaction(
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd }),
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
-
-        queryNames.forEach(name => {
-          queryClient.invalidateQueries({ queryKey: [name] });
-        })
+        ...queryNames.map(name => queryClient.invalidateQueries({ queryKey: [name] }))
       ]);
 
 
     },
-    onError: (err: any) => {
-      Toast.show({
-        type: "error",
-        text1: "Error!",
-        text2: err.message || `${mode} failed. Please try again later.`,
-      });
+    onError: (err: unknown) => {
+      const message = (err instanceof Error && err.message) ? err.message : `${mode} failed. Please try again later.`;
+      Toast.show({ type: 'error', text1: 'Error!', text2: message });
     },
   });
 

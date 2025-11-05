@@ -84,5 +84,3 @@ export const BUSINESS_FN = {
 } as const;
 
 export type BusinessFn = typeof BUSINESS_FN;
-
-export default BUSINESS_FN;

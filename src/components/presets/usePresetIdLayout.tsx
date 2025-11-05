@@ -1,5 +1,5 @@
-import BUSINESS_FN from '@/src/dicts/businessFn';
-import QUERY_KEYS from '@/src/dicts/queryKeys';
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import useKeyboard from '@/src/hooks/useKeyboard';
 import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';

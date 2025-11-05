@@ -1,5 +1,5 @@
 import { Preset } from '@/backend/business-layer/presets/Preset';
-import ROUTES from '@/src/dicts/routes';
+import { ROUTES } from '@/src/dicts/routes';
 import getMode from '@/src/util/getMode';
 import { numberToMoney } from '@/src/util/numberToMoney';
 import { ExternalPathString, router } from 'expo-router';

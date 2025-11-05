@@ -1,4 +1,4 @@
-import ROUTES from '@/src/dicts/routes';
+import { ROUTES } from '@/src/dicts/routes';
 import formatDate from '@/src/util/formatDate';
 import { numberToMoney } from '@/src/util/numberToMoney';
 import { ExternalPathString, router } from 'expo-router';

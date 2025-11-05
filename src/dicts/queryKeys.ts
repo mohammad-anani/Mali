@@ -44,4 +44,3 @@ export const QUERY_KEYS = {
 
 export type QueryKeyLike = readonly unknown[];
 
-export default QUERY_KEYS;

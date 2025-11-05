@@ -1,5 +1,5 @@
 import { primary, primaryDark } from '@/src/css'
-import ROUTES from '@/src/dicts/routes'
+import { ROUTES } from '@/src/dicts/routes'
 import { ExternalPathString, router } from 'expo-router'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'

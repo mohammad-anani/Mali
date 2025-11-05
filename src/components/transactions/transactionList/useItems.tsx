@@ -1,6 +1,6 @@
 import { Transaction } from '@/backend/business-layer/transactions/Transaction';
-import BUSINESS_FN from '@/src/dicts/businessFn';
-import QUERY_KEYS from '@/src/dicts/queryKeys';
+import { BUSINESS_FN } from '@/src/dicts/businessFn';
+import { QUERY_KEYS } from '@/src/dicts/queryKeys';
 import getMonthYear from '@/src/util/getMonthYear';
 import { useQuery } from '@tanstack/react-query';
 

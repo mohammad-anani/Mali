@@ -71,7 +71,7 @@ export async function openDatabase(): Promise<SQLite.SQLiteDatabase | null> {
       const d = await SQLite.openDatabaseAsync("mali.db");
       // Debug: dump the DB handle shape before calling into native code.
       try {
-        console.debug("openDatabase: got db handle", {
+        console.warn("openDatabase: got db handle", {
           db: d,
           hasExecAsync: typeof (d as any)?.execAsync === "function",
           hasGetAllAsync: typeof (d as any)?.getAllAsync === "function",
@@ -166,7 +166,7 @@ export async function resetDatabase(): Promise<boolean> {
     // Re-enable foreign key checks
     await db.execAsync("PRAGMA foreign_keys = ON;");
 
-    console.log("All tables cleared successfully.");
+    console.warn("All tables cleared successfully.");
     return true;
   } catch (err) {
     console.error("resetDatabase error", err);
@@ -221,7 +221,7 @@ export async function createDatabaseTables(): Promise<boolean> {
       );
     `);
 
-    console.log("Database created with tables Presets, Transactions, and Settings.");
+    console.warn("Database created with tables Presets, Transactions, and Settings.");
     return true;
   } catch (err) {
     console.error("createDatabase error", err);

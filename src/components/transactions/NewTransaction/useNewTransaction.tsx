@@ -55,7 +55,6 @@ export default function useNewTransaction(isDeposit: boolean, balances: Balance)
 
     if (withdrawExceedsBalance) {
       setIsSubmitError(true);
-      console.log("Hello");
       throw new Error("Validation failed");
 
     }
@@ -64,13 +63,8 @@ export default function useNewTransaction(isDeposit: boolean, balances: Balance)
 
     const parsed = schema.safeParse(data);
     if (!parsed.success) {
-      console.log(parsed.error.format());
       setIsSubmitError(true);
-      Toast.show({
-        type: "error",
-        text1: "Error!",
-        text2: "Validation failed!",
-      });
+      Toast.show({ type: 'error', text1: 'Error!', text2: 'Validation failed!' });
       throw new Error(`${mode} failed`);
     }
 
@@ -104,26 +98,16 @@ export default function useNewTransaction(isDeposit: boolean, balances: Balance)
       });
 
 
-      await Promise.all(
-        [
-          queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
-          queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) }),
-          queryNames.forEach(name => {
-            queryClient.invalidateQueries({ queryKey: [name] });
-          })
-
-
-        ]
-      )
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
+        queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) }),
+        ...queryNames.map(name => queryClient.invalidateQueries({ queryKey: [name] }))
+      ]);
 
     },
-    onError: (err: any) => {
-      Toast.show({
-
-        type: "error",
-        text1: "Error!",
-        text2: err.message || `${mode} failed. Please try again later.`,
-      });
+    onError: (err: unknown) => {
+      const message = (err instanceof Error && err.message) ? err.message : `${mode} failed. Please try again later.`;
+      Toast.show({ type: 'error', text1: 'Error!', text2: message });
     },
   });
 
