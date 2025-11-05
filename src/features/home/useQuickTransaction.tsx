@@ -7,6 +7,7 @@ import getMode from "@/src/util/getMode";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
+import { queryNames } from '../balance/Report';
 
 export type QuickTransactionForm = {
   title: string;
@@ -103,6 +104,10 @@ export default function useQuickTransaction(
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd }),
         queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
+
+        queryNames.forEach(name => {
+          queryClient.invalidateQueries({ queryKey: [name] });
+        })
       ]);
 
 

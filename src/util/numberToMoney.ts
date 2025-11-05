@@ -21,3 +21,9 @@ export function numberToMoney(value: string | number): string {
 
   return formatted;
 }
+
+export function moneySign(value: string | number) {
+  const amount = numberToMoney(+value);
+
+  return +value > 0 ? "+" + amount : amount;
+}

@@ -2,6 +2,7 @@
 import { AddTransaction, AddTransactionSchema } from '@/backend/business-layer/transactions/Transaction';
 import { BUSINESS_FN } from '@/src/dicts/businessFn';
 import { QUERY_KEYS } from '@/src/dicts/queryKeys';
+import { queryNames } from '@/src/features/balance/Report';
 import getMode from '@/src/util/getMode';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
@@ -106,7 +107,10 @@ export default function useNewTransaction(isDeposit: boolean, balances: Balance)
       await Promise.all(
         [
           queryClient.invalidateQueries({ queryKey: QUERY_KEYS.transactions.of(isDeposit).list }),
-          queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) })
+          queryClient.invalidateQueries({ queryKey: (result.isLBP ? QUERY_KEYS.balances.lbp : QUERY_KEYS.balances.usd) }),
+          queryNames.forEach(name => {
+            queryClient.invalidateQueries({ queryKey: [name] });
+          })
 
 
         ]

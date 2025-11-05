@@ -1,6 +1,6 @@
 
 import { openDatabase } from "./general";
-export async function getSetting(name: string) {
+export async function getSettingData(name: string) {
   try {
     const db = await openDatabase();
     if (!db) {
@@ -19,7 +19,7 @@ export async function getSetting(name: string) {
 }
 
 
-export async function getSettings() {
+export async function getSettingsData() {
   try {
     const db = await openDatabase();
     if (!db) {

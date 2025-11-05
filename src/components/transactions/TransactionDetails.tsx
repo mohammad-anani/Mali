@@ -45,7 +45,7 @@ export default function TransactionDetails({ isDeposit }: { isDeposit: boolean }
         className="flex-1">
         <View className='gap-3 justify-between  flex-1 '>
           <View className='gap-3 flex-1'>
-            y
+
             <Title >{isDeposit ? "Deposit" : "Withdraw"} Details:</Title>
 
             <View className='gap-3'>

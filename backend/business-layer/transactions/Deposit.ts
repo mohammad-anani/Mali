@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createTransactionData, deleteTransactionData, findTransactionByIDData, getAllTransactionsData } from "@/backend/data-access-layer/transactions/transactions";
+import { createTransactionData, deleteTransactionData, findTransactionByIDData, getAllTransactionsData, getTotalTransactionsData } from "@/backend/data-access-layer/transactions/transactions";
 import { AddTransaction, AddTransactionSchema, Transaction, TransactionSchema, UnknowTransaction } from "./Transaction";
 
 
@@ -57,4 +57,16 @@ export async function getAllDeposits(): Promise<Transaction[] | null> {
 
   console.error('getAllDeposits: error parsing deposits list', parseResult.error?.format ? parseResult.error.format() : parseResult.error);
   return null;
+}
+
+export async function getTotalDepositsUSD(fromDate: string, toDate: string): Promise<number | null> {
+
+  return await getTotalTransactionsData({ fromDate, toDate, isDeposit: true, isLBP: false });
+
+}
+
+export async function getTotalDepositsLBP(fromDate: string, toDate: string): Promise<number | null> {
+
+  return await getTotalTransactionsData({ fromDate, toDate, isDeposit: true, isLBP: true });
+
 }

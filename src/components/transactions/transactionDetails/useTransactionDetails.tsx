@@ -34,6 +34,7 @@ export default function useTransactionDetails(isDeposit: boolean) {
     mutationFn: async () => {
 
       if (isDeposit && balance && data?.amount && ((balance - data.amount) < 0)) {
+        setIsOpen(false);
         throw new Error("Balance cannot be negative.")
       }
 
@@ -57,11 +58,11 @@ export default function useTransactionDetails(isDeposit: boolean) {
 
 
     },
-    onError: () => {
+    onError: ({ message }) => {
       Toast.show({
         type: "error",
         text1: "Error!",
-        text2: `Deletion failed. Please try again later.`,
+        text2: message ?? `Deletion failed. Please try again later.`,
       });
     },
   });

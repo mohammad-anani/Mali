@@ -47,12 +47,9 @@ export async function deleteTransactionData(id: number) {
     return false;
   }
 }
-
 export async function getAllTransactionsData(filter: any = {}) {
   try {
-    // run queries through the serialized runDb helper
-
-    const { fromDate, toDate, presetID, title, isDeposit } = filter;
+    const { fromDate, toDate, presetID, title, isDeposit, isLBP } = filter;
     const whereClauses: string[] = [];
     const params: any[] = [];
 
@@ -78,20 +75,87 @@ export async function getAllTransactionsData(filter: any = {}) {
 
     if (isDeposit !== undefined) {
       whereClauses.push("isDeposit = ?");
-      params.push(isDeposit);
+      params.push(isDeposit ? 1 : 0);
+    }
+
+    if (isLBP !== undefined) {
+      whereClauses.push("isLBP = ?");
+      params.push(isLBP ? 1 : 0);
     }
 
     const whereSQL =
       whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
     const transactions = await runDb((db) =>
-      db.getAllAsync(`SELECT * FROM Transactions ${whereSQL} order by date desc;`, params)
+      db.getAllAsync(`SELECT * FROM Transactions ${whereSQL} ORDER BY date DESC;`, params)
     );
 
     return (transactions as any) ?? [];
   } catch (err) {
-
     console.error("getAll error:", err);
     return [];
+  }
+}
+
+export async function getOldestTransactionDateData(): Promise<string | null> {
+  try {
+    const { date } = (await runDb(async (db) =>
+      db.getFirstAsync(`SELECT MIN(date) AS date FROM Transactions`)
+    )) as { date: string };
+    return date ?? null;
+  } catch (err) {
+    console.error("getOldestTransactionDate error:", err);
+    return null;
+  }
+}
+
+export async function getTotalTransactionsData(filter: any = {}) {
+  try {
+    const { fromDate, toDate, presetID, title, isDeposit, isLBP } = filter;
+    const whereClauses: string[] = [];
+    const params: any[] = [];
+
+    if (fromDate) {
+      console.log(fromDate);
+      whereClauses.push("date >= ?");
+      params.push(fromDate);
+    }
+
+    if (toDate) {
+      console.log(toDate, "t");
+      whereClauses.push("date <= ?");
+      params.push(toDate);
+    }
+
+    if (presetID) {
+      whereClauses.push("presetID = ?");
+      params.push(presetID);
+    }
+
+    if (title) {
+      whereClauses.push("title LIKE ?");
+      params.push(`%${title}%`);
+    }
+
+    if (isDeposit !== undefined) {
+      whereClauses.push("isDeposit = ?");
+      params.push(isDeposit ? 1 : 0);
+    }
+
+    if (isLBP !== undefined) {
+      whereClauses.push("isLBP = ?");
+      params.push(isLBP ? 1 : 0);
+    }
+
+    const whereSQL =
+      whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
+    console.log(whereSQL, params, 20);
+    const { total } = (await runDb((db) =>
+      db.getFirstAsync(`SELECT COALESCE(SUM(amount), 0) AS total FROM Transactions ${whereSQL};`, params)
+    )) as { total: number | null };
+    return total ?? 0;
+  } catch (err) {
+    console.error("getTotal error:", err);
+    return 0;
   }
 }

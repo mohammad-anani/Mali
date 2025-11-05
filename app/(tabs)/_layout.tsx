@@ -68,7 +68,7 @@ export default function Layout() {
       <Tabs.Screen
         name="balance"
         options={{
-          title: 'Balance',
+          title: 'Balance', lazy: true,
           tabBarIcon: ({ color, size }) => <CircleDollarSign color={color} size={size} />,
         }}
       />
